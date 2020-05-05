@@ -18,6 +18,7 @@ class Student(models.Model):
     sname = models.CharField('学生姓名', max_length=50, blank=True)
     age = models.IntegerField('年龄', default=0)
     gender = models.CharField('性别', choices=GENDER, max_length=6, default='secret')
+    spasswd = models.CharField('登陆密码', max_length=50, blank=False, default='123456')
 
 
     class Meta:
@@ -35,6 +36,7 @@ class Teacher(models.Model):
 
     tid = models.CharField('教师id', max_length=13, unique=True, blank=False)
     tname = models.CharField('教师姓名', max_length=50, blank=True)
+    tpasswd = models.CharField('登陆密码', max_length=50, blank=False, default='123456')
 
 
     class Meta:
