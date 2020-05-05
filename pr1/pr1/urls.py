@@ -18,6 +18,7 @@ from django.urls import path
 from background import views as bg
 
 urlpatterns = [
+    path('', bg.testIndedx, name='test'),
     path('admin/', admin.site.urls),
     path('home/', bg.home, name='home'),
     path('login/', bg.signin, name='login'),

@@ -2,6 +2,8 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 
+def testIndedx(request):
+    return render(request, 'test.html')
 
 def teacher(request):
     pass
