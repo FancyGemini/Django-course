@@ -6,13 +6,6 @@ from background import models
 from django.core.exceptions import ObjectDoesNotExist
 
 
-def teacher(request):
-    pass
-
-
-def student(request):
-    pass
-
 
 def home(request):
     return render(request, 'home.html')
@@ -38,7 +31,7 @@ def signin(request):
             v = request.COOKIES.get('log_id_t')
             return redirect('/index', log_id_t=str(v))
         else:
-            return redirect('/index', log_id_s=str(v))
+            return redirect('/student', log_id_s=str(v))
     else:
         return render(request, 'Sign In.html')
 
@@ -61,7 +54,7 @@ def waiting(request):
         corr = info
         corr_pwd = str(corr.spasswd)
         if corr_pwd == pwd:
-            re = redirect('/index')
+            re = redirect('/student')
             if request.COOKIES.get('log_id_s'):
                 re.delete_cookie('log_id_s')
             if request.COOKIES.get('log_id_t'):
@@ -74,7 +67,7 @@ def waiting(request):
             corr = info
             corr_pwd = str(corr.tpasswd)
             if corr_pwd == pwd:
-                re = redirect('/index')
+                re = redirect('/teacher')
                 if request.COOKIES.get('log_id_s'):
                     re.delete_cookie('log_id_s')
                 if request.COOKIES.get('log_id_t'):
@@ -88,18 +81,13 @@ def waiting(request):
     return redirect('/')
 
 
-
-def index(request):
-    return render(request, 'AdminLTE/index.html')
-
-
-def index2(request):
-    return render(request, 'AdminLTE/index2.html')
+def student(request):
+    return render(request, 'AdminLTE/student.html')
 
 
-def index3(request):
-    return render(request, 'AdminLTE/index3.html')
+def teacher(request):
+    return render(request, 'AdminLTE/teacher.html')
 
 
-def starter(request):
-    return render(request, 'AdminLTE/starter.html')
+def super(request):
+    return render(request, 'AdminLTE/super.html')

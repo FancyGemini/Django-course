@@ -21,9 +21,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('home/', bg.home, name='home'),
     path('', bg.signin, name='login'),
-    path('index/', bg.index, name='index'),
-    path('index2/', bg.index2, name='index2'),
-    path('index3/', bg.index3, name='index3'),
-    path('starter/', bg.starter, name='starter'),
+    path('student/', bg.student, name='student'),
+    path('teacher/', bg.teacher, name='teacher'),
+    path('super/', bg.super, name='super'),
     path('waiting/', bg.waiting, name='waiting'),
 ]
