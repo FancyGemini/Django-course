@@ -21,13 +21,12 @@ class Student(models.Model):
     gender = models.CharField('性别', choices=GENDER, max_length=6, default='secret')
     spasswd = models.CharField('登陆密码', max_length=50, blank=False, default='123456')
 
-
     class Meta:
         verbose_name = '学生信息'
         verbose_name_plural = '学生信息'
 
     def __str__(self):
-        return self.sname
+        return '[' + self.sid + ']' +  self.sname
 
 # --------------------------
 # teacher table
@@ -36,16 +35,15 @@ class Teacher(models.Model):
     objects = models.Manager()
 
     tid = models.CharField('教师id', max_length=13, unique=True, blank=False)
-    tname = models.CharField('教师姓名', max_length=50, blank=False)
-    tpasswd = models.CharField('登陆密码', max_length=50, blank=False, default='123456')
-
+    tname = models.CharField('教师姓名', max_length=50, blank=True)
+    tpasswd = models.CharField('登录密码', max_length=50, blank=False, default='123456')
 
     class Meta:
         verbose_name = '教师信息'
         verbose_name_plural = '教师信息'
 
     def __str__(self):
-        return self.tname
+        return '[' + self.tid + ']' +  self.tname
 
 # --------------------------
 # course table
@@ -56,14 +54,14 @@ class Course(models.Model):
     cid = models.CharField('课程id', max_length=13, unique=True, blank=False)
     cname = models.CharField('课程名称', max_length=50, blank=True)
     credit = models.IntegerField('学分', blank=False, default=0)
-    tid = models.ForeignKey('Teacher', on_delete=models.CASCADE)
+    tid = models.ForeignKey(Teacher, on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = '课程信息'
         verbose_name_plural = '课程信息'
 
     def __str__(self):
-        return self.cname
+        return '[' + self.cid + ']' +  self.cname
 
 # --------------------------
 # courses student chosen table
@@ -71,15 +69,15 @@ class Course(models.Model):
 class StuToCourse(models.Model):
     objects = models.Manager()
 
-    sid = models.ForeignKey('Student', on_delete=models.CASCADE)
-    cid = models.ForeignKey('Course', on_delete=models.CASCADE)
+    sid = models.ForeignKey(Student, on_delete=models.CASCADE)
+    cid = models.ForeignKey(Course, on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = '选课信息'
         verbose_name_plural = '选课信息'
 
     def __str__(self):
-        return self.sid.sname
+        return '[' + self.cid.cid + ']' +  self.cid.cname
 
 # --------------------------
 # classroom table
@@ -95,7 +93,7 @@ class Classroom(models.Model):
         verbose_name_plural = '教室信息'
 
     def __str__(self):
-        return self.rloc
+        return '[' + self.rid + ']' +  self.rloc
 
 # --------------------------
 # courses on class table
@@ -103,8 +101,8 @@ class Classroom(models.Model):
 class CouOnClass(models.Model):
     objects = models.Manager()
 
-    cid = models.ForeignKey('Course', on_delete=models.CASCADE)
-    rid = models.ForeignKey('Classroom', on_delete=models.CASCADE)
+    cid = models.ForeignKey(Course, on_delete=models.CASCADE)
+    rid = models.ForeignKey(Classroom, on_delete=models.CASCADE)
     ctime = models.TimeField('上课时间', blank=False, default=timezone.now)
 
     class Meta:
