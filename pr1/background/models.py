@@ -107,8 +107,19 @@ class Classroom(models.Model):
 class CouOnClass(models.Model):
     objects = models.Manager()
 
+    DAYS = {
+        ('Mon', '周一'),
+        ('Tue', '周二'),
+        ('Wed', '周三'),
+        ('Thur', '周四'),
+        ('Fri', '周五'),
+        ('Sat', '周六'),
+        ('Sun', '周日')
+    }
+    
     cid = models.ForeignKey(Course, on_delete=models.CASCADE)
     rid = models.ForeignKey(Classroom, on_delete=models.CASCADE)
+    cday = models.CharField('上课星期', choices=DAYS, max_length=5, blank=False, default='Mon')
     ctime = models.TimeField('上课时间', blank=False, default=timezone.now)
 
     class Meta:
