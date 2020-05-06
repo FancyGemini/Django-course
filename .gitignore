@@ -1,0 +1,5 @@
+# vscode setting files
+/.vscode/
+
+# python byte code
+*/__pycache__/
