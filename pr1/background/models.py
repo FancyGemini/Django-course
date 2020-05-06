@@ -33,10 +33,16 @@ class Student(models.Model):
 
 class Teacher(models.Model):
     objects = models.Manager()
+    
+    AUTH = {
+        ('normal', '普通教师'),
+        ('admin', '管理员')
+    }
 
     tid = models.CharField('教师id', max_length=13, unique=True, blank=False)
     tname = models.CharField('教师姓名', max_length=50, blank=True)
     tpasswd = models.CharField('登录密码', max_length=50, blank=False, default='123456')
+    tauth = models.CharField('教师权限', choices=AUTH, max_length=7, default='normal')
 
     class Meta:
         verbose_name = '教师信息'
