@@ -20,9 +20,10 @@ from background import views as bg
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('home/', bg.home, name='home'),
-    path('login/', bg.signin, name='login'),
+    path('', bg.signin, name='login'),
     path('index/', bg.index, name='index'),
     path('index2/', bg.index2, name='index2'),
     path('index3/', bg.index3, name='index3'),
     path('starter/', bg.starter, name='starter'),
+    path('waiting/', bg.waiting, name='waiting'),
 ]

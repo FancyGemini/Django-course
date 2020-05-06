@@ -1,5 +1,5 @@
 from django.contrib import admin
-from background.models import Student, Teacher, Course, Classroom
+from background.models import Student, Teacher, Course, StuToCourse, Classroom, CouOnClass
 
 # Register your models here.
 
@@ -9,6 +9,6 @@ class StudentAdmin(admin.ModelAdmin):
     list_display = ('sid', 'sname', 'age', 'gender')
     # 哪些可以点进去
     list_display_links = ('sid', 'sname')
-    
+
 # 注册其他模型
-admin.site.register([Teacher, Course, Classroom])
+admin.site.register([Teacher, Course, StuToCourse, Classroom, CouOnClass])
