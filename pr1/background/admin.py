@@ -12,7 +12,7 @@ class StudentAdmin(admin.ModelAdmin):
     
 @admin.register(CouOnClass)
 class CouOnClassAdmin(admin.ModelAdmin):
-    list_display = ('cid', 'rid', 'ctime')
+    list_display = ('cid', 'rid', 'cday', 'ctime')
     
 @admin.register(StuToCourse)
 class StuToCouAdmin(admin.ModelAdmin):

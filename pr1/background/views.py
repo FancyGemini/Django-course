@@ -1,10 +1,11 @@
 # coding:utf-8
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from django.contrib import messages
+from io import BytesIO
 from background import models
 from django.core.exceptions import ObjectDoesNotExist
-
+import qrcode
 
 
 def home(request):
@@ -79,6 +80,35 @@ def waiting(request):
             return redirect('/')
     messages.error(request, '你输入的密码不正确！')
     return redirect('/')
+
+# 测试用
+def class_test(request):
+    class_list = models.Course.objects.all().values('cid', 'cname', 'tid__tname')
+    #print(class_list)
+    context = {
+        'all_class' : class_list,
+    }
+    
+    return render(request, 'class.html', context)
+
+# 测试用
+def qianndao_test(request, cid):
+    context = {
+        'cid' : cid,
+    }
+    return render(request, 'qiandao.html', context)
+
+# 还需要添加过滤功能 只有存在的课程才允许生成二维码
+def get_qrcode(request, cid):
+    cou = models.Course.objects.filter(cid = str(cid))
+    if cou.exists():
+        img = qrcode.make(str(cid))
+        buf = BytesIO()
+        img.save(buf)
+        img_stream = buf.getvalue()
+        return HttpResponse(img_stream, content_type='image/png')
+    else:
+        return HttpResponse('')
 
 
 def student(request):

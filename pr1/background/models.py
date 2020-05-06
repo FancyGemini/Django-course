@@ -33,10 +33,16 @@ class Student(models.Model):
 
 class Teacher(models.Model):
     objects = models.Manager()
+    
+    AUTH = {
+        ('normal', '普通教师'),
+        ('admin', '管理员')
+    }
 
     tid = models.CharField('教师id', max_length=13, unique=True, blank=False)
     tname = models.CharField('教师姓名', max_length=50, blank=True)
     tpasswd = models.CharField('登录密码', max_length=50, blank=False, default='123456')
+    tauth = models.CharField('教师权限', choices=AUTH, max_length=7, default='normal')
 
     class Meta:
         verbose_name = '教师信息'
@@ -101,8 +107,19 @@ class Classroom(models.Model):
 class CouOnClass(models.Model):
     objects = models.Manager()
 
+    DAYS = {
+        ('Mon', '周一'),
+        ('Tue', '周二'),
+        ('Wed', '周三'),
+        ('Thur', '周四'),
+        ('Fri', '周五'),
+        ('Sat', '周六'),
+        ('Sun', '周日')
+    }
+    
     cid = models.ForeignKey(Course, on_delete=models.CASCADE)
     rid = models.ForeignKey(Classroom, on_delete=models.CASCADE)
+    cday = models.CharField('上课星期', choices=DAYS, max_length=5, blank=False, default='Mon')
     ctime = models.TimeField('上课时间', blank=False, default=timezone.now)
 
     class Meta:

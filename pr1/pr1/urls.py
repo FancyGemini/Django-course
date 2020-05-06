@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.urls import re_path
 from background import views as bg
 
 urlpatterns = [
@@ -25,4 +26,7 @@ urlpatterns = [
     path('teacher/', bg.teacher, name='teacher'),
     path('super/', bg.super, name='super'),
     path('waiting/', bg.waiting, name='waiting'),
+    path('classtest/', bg.class_test, name='class'),
+    re_path(r'qiandao/(\d+)', bg.qianndao_test),
+    re_path(r'qrcode/(\d+)', bg.get_qrcode),
 ]
