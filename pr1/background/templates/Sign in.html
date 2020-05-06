@@ -65,7 +65,8 @@
           <div class="row">
             <div class="col-sm-12">
               <div class="signin-form">
-                <form action="/waiting/">
+                <form action="/waiting/" method="post">
+                  {% csrf_token %}
                   <div class="form-group">
                     <label for="signin_form">学号/教师工号</label>
                     <input type="text" class="form-control" name="log_id" id="signin_form" placeholder="输入你的学号/教师工号">

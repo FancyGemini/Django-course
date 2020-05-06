@@ -46,8 +46,8 @@ def signin(request):
 
 def waiting(request):
     request.encoding = 'utf-8'
-    id = request.GET.get('log_id')
-    pwd = request.GET.get('log_pwd')
+    id = request.POST.get('log_id')
+    pwd = request.POST.get('log_pwd')
     id = str(id)
     pwd = str(pwd)
     if not id.strip():
@@ -82,9 +82,10 @@ def waiting(request):
                 re.set_cookie('log_id_t', id)
                 return re
         except ObjectDoesNotExist:
-            messages.error(request, '你输入的账户或密码错误！')
+            messages.error(request, '你输入的账户不存在！')
             return redirect('/')
-    pass
+    messages.error(request, '你输入的密码不正确！')
+    return redirect('/')
 
 
 
