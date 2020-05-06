@@ -3,3 +3,4 @@
 
 # python byte code
 */__pycache__/
+*.pyc
