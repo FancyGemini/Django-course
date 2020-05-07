@@ -14,9 +14,9 @@ def home(request):
 
 def check_cookies(request):
     is_stu = True
-    v = request.COOKIES.get('log_id_s')
+    v = request.COOKIES.get('log_s')
     if not v:
-        v = request.COOKIES.get('log_id_t')
+        v = request.COOKIES.get('log_t')
         if not v:
             return False
         else:
@@ -27,12 +27,12 @@ def check_cookies(request):
 
 def signin(request):
     if check_cookies(request):
-        v = request.COOKIES.get('log_id_s')
+        v = request.COOKIES.get('log_s')
         if not v:
-            v = request.COOKIES.get('log_id_t')
-            return redirect('/index', log_id_t=str(v))
+            v = request.COOKIES.get('log_t')
+            return redirect('/index', log_t=str(v))
         else:
-            return redirect('/student', log_id_s=str(v))
+            return redirect('/student', log_s=str(v))
     else:
         return render(request, 'Sign In.html')
 
@@ -56,11 +56,7 @@ def waiting(request):
         corr_pwd = str(corr.spasswd)
         if corr_pwd == pwd:
             re = redirect('/student')
-            if request.COOKIES.get('log_id_s'):
-                re.delete_cookie('log_id_s')
-            if request.COOKIES.get('log_id_t'):
-                re.delete_cookie('log_id_t')
-            re.set_cookie('log_id_s', id)
+            re.set_cookie('log_s', str(info.sid))
             return re
     except ObjectDoesNotExist:
         try:
@@ -69,17 +65,20 @@ def waiting(request):
             corr_pwd = str(corr.tpasswd)
             if corr_pwd == pwd:
                 re = redirect('/teacher')
-                if request.COOKIES.get('log_id_s'):
-                    re.delete_cookie('log_id_s')
-                if request.COOKIES.get('log_id_t'):
-                    re.delete_cookie('log_id_t')
-                re.set_cookie('log_id_t', id)
+                re.set_cookie('log_t', str(info.tid))
                 return re
         except ObjectDoesNotExist:
             messages.error(request, '你输入的账户不存在！')
             return redirect('/')
     messages.error(request, '你输入的密码不正确！')
     return redirect('/')
+
+
+def logout(request):
+    re = redirect('/')
+    re.delete_cookie('log_s')
+    re.delete_cookie('log_t')
+    return re
 
 # 测试用
 def class_test(request):
@@ -88,7 +87,7 @@ def class_test(request):
     context = {
         'all_class' : class_list,
     }
-    
+
     return render(request, 'class.html', context)
 
 # 测试用
@@ -112,7 +111,11 @@ def get_qrcode(request, cid):
 
 
 def student(request):
-    return render(request, 'AdminLTE/student.html')
+    v = request.COOKIES.get('log_s')
+    id = str(v)
+    info = models.Student.objects.get(sid=id)
+    context = {'info':info}
+    return render(request, 'AdminLTE/student.html', context)
 
 
 def teacher(request):
@@ -121,3 +124,7 @@ def teacher(request):
 
 def super(request):
     return render(request, 'AdminLTE/super.html')
+
+
+def index(request):
+    return render(request, 'AdminLTE/index.html')
