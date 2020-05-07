@@ -3,10 +3,14 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse, Http404
 from django.contrib import messages
 from django.core import exceptions
+from django.db.models import Q
+from django.utils import timezone
 from io import BytesIO
 from background import models
 from django.core.exceptions import ObjectDoesNotExist
 import qrcode
+# import pyzbar.pyzbar as pyzbar
+# import cv2
 
 
 def home(request):
@@ -81,6 +85,36 @@ def logout(request):
     re.delete_cookie('log_t')
     return re
 
+
+# 拟在这里实现利用摄像头扫描并识别二维码的功能
+# 注释部分为网上找到的相关模板（未运行过）
+def call_camera(request):
+    pass
+'''    def decodeDisplay(img):
+        barcodes = pyzbar.decode(image)
+        for barcode in barcodes:
+            (x, y, w, h) = barcode.rect
+            cv2.rectangle(image, (x,y), (x + w, y + h), (0, 255, 0), 2)
+            barcodeData = barcode.data.decode("UTF-8")
+            barcodeType = barcode.barcodeType
+            text = "{} ({})".format(barcodeData, barcodeType)
+            cv2.putText(image, text, (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, .5, (225, 225, 225), 2)
+        return image
+    def detect():
+        camera = cv2.VideoCapture(0)
+        whlie(True):
+            ret, frame = camera.read()
+            gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+            im = decodeDisplay(gray)
+            cv2.waitKey(5)
+            cv2.imshow("camera", im)
+            if cv2.waitKey(1) == ord('Q'):
+                break
+        camera.release()
+        cv2.destroyAllWindows()
+    if __name__ == '__main__':
+        detect()'''
+
 # 测试用
 def class_test(request):
     class_list = models.Course.objects.all().values('cid', 'cname', 'tid__tname')
@@ -115,8 +149,30 @@ def student(request):
     v = request.COOKIES.get('log_s')
     id = str(v)
     info = models.Student.objects.get(sid=id)
-    context = {'info':info}
+    courses = models.StuToCourse.objects.filter(sid=id)
+    # context = {'info':info, 'courses':[], 'locations':[]}
+    context = {'info':info, 'courses':[]}
+    for cou in courses:
+        cou_id = cou.cid
+        cou_id = str(cou_id)
+        print(cou_id)
+        cou_name = models.Course.objects.get(cid=cou_id).cname
+        cou_name = str(cou_name)
+        context['courses'].append(cou_name)
+        # today = timezone.now().date()
+        # room_loc = models.CouOnClass.objects.get(Q(cid=cou_id) & Q(ctime-today=timedelta(days=0))).rid__rloc
+        # room_loc = str(room_loc)
+        # context['room_loc'].append(room_loc)
     return render(request, 'AdminLTE/student.html', context)
+
+
+def student_course(request):
+    v = request.COOKIES.get('log_s')
+    id = str(v)
+    info = models.Student.objects.get(sid=id)
+    context={'info':info}
+    return render(request, 'AdminLTE/student_course.html', context)
+
 
 
 def teacher(request):

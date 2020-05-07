@@ -25,6 +25,7 @@ urlpatterns = [
     path('logout/', bg.logout, name='logout'),
     path('index/', bg.index, name='index'),
     path('student/', bg.student, name='student'),
+    path('student_course/', bg.student_course, name='student_course'),
     path('teacher/', bg.teacher, name='teacher'),
     path('super/', bg.super, name='super'),
     path('waiting/', bg.waiting, name='waiting'),
