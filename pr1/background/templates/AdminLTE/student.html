@@ -10,7 +10,7 @@
   <!-- Font Awesome -->
   <link rel="stylesheet" href="{%static "plugins/fontawesome-free/css/all.min.css" %}">
   <!-- Ionicons -->
-  <link rel="stylesheet" href="{%static "https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" %}">
+  <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/ionicons/3.0.0-alpha.3/css/ionicons.min.css">
   <!-- Tempusdominus Bbootstrap 4 -->
   <link rel="stylesheet" href="{%static "plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css" %}">
   <!-- iCheck -->
@@ -39,9 +39,9 @@
       <li class="nav-item d-none d-sm-inline-block">
         <a href={%url 'student' %} class="nav-link">首页</a>
       </li>
-      <!-- <li class="nav-item d-none d-sm-inline-block">
-        <p class="nav-link"><span value="getCookie()"/>, 欢迎您</p>
-      </li> -->
+      <li class="nav-item d-none d-sm-inline-block">
+        <a href="#" class="nav-link">{{info.sname}}</a>
+      </li>
       <li class="nav-item d-none d-sm-inline-block">
         <a href={%url 'logout' %} class="nav-link">登出</a>
       </li>

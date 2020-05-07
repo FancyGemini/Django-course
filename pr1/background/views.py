@@ -2,6 +2,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, Http404
 from django.contrib import messages
+from django.core import exceptions
 from io import BytesIO
 from background import models
 from django.core.exceptions import ObjectDoesNotExist
