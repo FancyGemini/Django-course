@@ -33,7 +33,7 @@ class Student(models.Model):
 
 class Teacher(models.Model):
     objects = models.Manager()
-    
+
     AUTH = {
         ('normal', '普通教师'),
         ('admin', '管理员')
@@ -116,7 +116,7 @@ class CouOnClass(models.Model):
         ('Sat', '周六'),
         ('Sun', '周日')
     }
-    
+
     cid = models.ForeignKey(Course, on_delete=models.CASCADE)
     rid = models.ForeignKey(Classroom, on_delete=models.CASCADE)
     cday = models.CharField('上课星期', choices=DAYS, max_length=5, blank=False, default='Mon')
@@ -135,15 +135,15 @@ class CouOnClass(models.Model):
 
 class SignInfo(models.Model):
     objects = models.Manager()
-    
+
     sid = models.ForeignKey('Student', on_delete=models.CASCADE)
     cid = models.ForeignKey('CouOnClass', on_delete=models.CASCADE)
     # 签到时间 默认空 说明没进行签到 如果签到成功 则修改其值
     signtime = models.DateTimeField('签到时间', null=True, blank=True)
-    
+
     class Meta:
         verbose_name = '签到信息'
         verbose_name_plural = '签到信息'
-        
+
     def __str__(self):
         return self.sid.sname
