@@ -9,6 +9,7 @@ from io import BytesIO
 from background import models
 from django.core.exceptions import ObjectDoesNotExist
 import qrcode
+import datetime
 # import pyzbar.pyzbar as pyzbar
 # import cv2
 
@@ -118,7 +119,6 @@ def call_camera(request):
 # 测试用
 def class_test(request):
     class_list = models.Course.objects.all().values('cid', 'cname', 'tid__tname')
-    #print(class_list)
     context = {
         'all_class' : class_list,
     }
@@ -127,10 +127,28 @@ def class_test(request):
 
 # 测试用
 def qianndao_test(request, cid):
+    sid = str(request.COOKIES.get('log_s'))
     context = {
         'cid' : cid,
     }
     return render(request, 'qiandao.html', context)
+
+# 签到函数 未完善 还需要加入时间判断 即在指定时间段内才允许签到
+def student_sign(stuid, couid):
+    stu = models.StuToCourse.objects.get(sid__sid=stuid, cid__cid=couid)
+    if stu.exists():
+        # 获取课程详细信息
+        time = datetime.datetime.now()
+        couinfo = models.CouOnClass.objects.filter(cid=couid, cday=str(time.weekday())).values('ctime')
+        if not couinfo.exists():
+            # 返回类型后面将会使用字典代替 目前使用布尔告知签到成功与否
+            return False
+        else:
+            # 写入签到信息
+            models.SignInfo.objects.create(sid=stu.sid, cid=stu.cid)
+            return True
+    else:
+        return False
 
 # 还需要添加过滤功能 只有存在的课程才允许生成二维码
 def get_qrcode(request, cid):
@@ -170,7 +188,13 @@ def student_course(request):
     v = request.COOKIES.get('log_s')
     id = str(v)
     info = models.Student.objects.get(sid=id)
-    context={'info':info}
+    course = models.StuToCourse.objects.filter(sid__sid=id).values('cid__cid', 'cid__cname')
+    for cou in course:
+        print(cou)
+    context = {
+        'info' : info,
+        'course' : course,
+    }
     return render(request, 'AdminLTE/student_course.html', context)
 
 
