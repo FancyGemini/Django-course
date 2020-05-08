@@ -108,13 +108,13 @@ class CouOnClass(models.Model):
     objects = models.Manager()
 
     DAYS = {
-        ('Mon', '周一'),
-        ('Tue', '周二'),
-        ('Wed', '周三'),
-        ('Thur', '周四'),
-        ('Fri', '周五'),
-        ('Sat', '周六'),
-        ('Sun', '周日')
+        ('1', '周一'),
+        ('2', '周二'),
+        ('3', '周三'),
+        ('4', '周四'),
+        ('5', '周五'),
+        ('6', '周六'),
+        ('0', '周日')
     }
 
     cid = models.ForeignKey(Course, on_delete=models.CASCADE)
@@ -139,7 +139,7 @@ class SignInfo(models.Model):
     sid = models.ForeignKey('Student', on_delete=models.CASCADE)
     cid = models.ForeignKey('CouOnClass', on_delete=models.CASCADE)
     # 签到时间 默认空 说明没进行签到 如果签到成功 则修改其值
-    signtime = models.DateTimeField('签到时间', null=True, blank=True)
+    signtime = models.DateTimeField('签到时间', null=True, blank=True, auto_now_add=True)
 
     class Meta:
         verbose_name = '签到信息'
