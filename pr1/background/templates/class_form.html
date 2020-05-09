@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>发布签到</title>
+        <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.0/jquery.min.js"></script>
+    </head>
+    <body>
+        发布签到
+        <form action="/publish/{{cid}}" method="post">
+        {% csrf_token %}
+            开始时间 <input type="datetime-local" name="start" id="start">
+            结束时间 <input type="datetime-local" name="end" id="end">
+            <input type='submit'>
+        </form>
+        <script>
+            var time = "";
+            $(function(){
+                var ntime = new Date();
+                time += ntime.getFullYear()+"-";
+                time += (ntime.getMonth()+1) < 10 ? "0"+(ntime.getMonth()+1) : (ntime.getMonth()+1);
+                time += "-";
+                time += ntime.getDate() < 10 ? "0"+ntime.getDate() : ntime.getDate();
+                time += "T";
+                time += ntime.getHours() < 10 ? "0"+ntime.getHours() : ntime.getHours();
+                time += ":";
+                time += ntime.getMinutes() <10 ? "0"+ntime.getMinutes() : ntime.getMinutes();
+                
+
+                $("#start").val(time);
+                $("#end").val(time);
+            })
+        </script>
+    </body>
+
+</html>

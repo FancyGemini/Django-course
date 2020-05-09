@@ -9,6 +9,7 @@ from io import BytesIO
 from background import models
 from django.core.exceptions import ObjectDoesNotExist
 import qrcode
+import arrow
 import datetime
 # import pyzbar.pyzbar as pyzbar
 # import cv2
@@ -127,27 +128,48 @@ def class_test(request):
 
 # 测试用
 def qianndao_test(request, cid):
-    sid = str(request.COOKIES.get('log_s'))
+    #sid = str(request.COOKIES.get('log_s'))
     context = {
         'cid' : cid,
     }
     return render(request, 'qiandao.html', context)
 
-# 创建课程签到信息
+def classform(request, cid):
+    context = { 'cid' : cid }
+    return render(request, 'class_form.html', context)
+
+# 创建课程签到信息函数
 def set_sign(cid, time_start, time_end, debug=False):
+    course = models.Course.objects.get(cid=cid)
+    cousign_info = models.CouSignInfo.objects.filter(cid__cid=cid, timeend__gt=time_start)
     # 测试用
     if debug:
-        return models.CouSignInfo.objects.create(cid=cid, timestart=time_start, timeend=time_end)
-        
-    if time_start > time_end:
+        return models.CouSignInfo.objects.create(cid=course, timestart=time_start, timeend=time_end)
+    
+    # 如果开始时间大于结束时间 或 还有正在进行中的签到 不予继续创建签到
+    if time_start > time_end or cousign_info.exists():
         return None
     
-    cousign = models.CouSignInfo.objects.create(cid=cid, timestart=time_start, timeend=time_end)
+    cousign = models.CouSignInfo.objects.create(cid=course, timestart=time_start, timeend=time_end)
     return cousign
 
+# 教师发布签到页面
+# 还需要加入权限判断 只有老师能访问该页面 目前测试阶段暂不加
+def publish_sign(request, cid):
+    context = {}
+    request.encoding = 'utf-8'
+    tfmt = "YYYY-MM-DD[T]hh:mm:ss-ZZZ"
+    if request.POST:
+        utc = arrow.get(request.POST['start']+":00-Asia/Shanghai", tfmt)
+        context['starttime'] = utc.datetime
+        utc = arrow.get(request.POST['end']+":00-Asia/Shanghai", tfmt)
+        context['endtime'] = utc.datetime
+        context['cousign'] = set_sign(cid, context['starttime'], context['endtime'])
+        context['host'] = request.get_host()
+    return render(request, 'publish_test.html', context)
 
-# 学生签到函数 未完善 还需要加入时间判断 即在指定时间段内才允许签到
-def student_sign(stuid, couid, cousignid,  debug=False):
+# 学生签到函数
+def student_sign(stuid, couid, cousignid, debug=False):
     stu = models.StuToCourse.objects.get(sid__sid=stuid, cid__cid=couid)
     
     # 测试用

@@ -30,6 +30,8 @@ urlpatterns = [
     path('super/', bg.super, name='super'),
     path('waiting/', bg.waiting, name='waiting'),
     path('classtest/', bg.class_test, name='class'),
+    re_path(r'class_form/(\d+)', bg.classform),
+    re_path(r'publish/(\d+)', bg.publish_sign),
     re_path(r'qiandao/(\d+)', bg.qianndao_test),
     re_path(r'qrcode/(\d+)', bg.get_qrcode),
 ]
