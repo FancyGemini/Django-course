@@ -133,22 +133,35 @@ def qianndao_test(request, cid):
     }
     return render(request, 'qiandao.html', context)
 
-# 签到函数 未完善 还需要加入时间判断 即在指定时间段内才允许签到
-def student_sign(stuid, couid):
+# 创建课程签到信息
+def set_sign(cid, time_start, time_end, debug=False):
+    # 测试用
+    if debug:
+        return models.CouSignInfo.objects.create(cid=cid, timestart=time_start, timeend=time_end)
+        
+    if time_start > time_end:
+        return None
+    
+    cousign = models.CouSignInfo.objects.create(cid=cid, timestart=time_start, timeend=time_end)
+    return cousign
+
+
+# 学生签到函数 未完善 还需要加入时间判断 即在指定时间段内才允许签到
+def student_sign(stuid, couid, cousignid,  debug=False):
     stu = models.StuToCourse.objects.get(sid__sid=stuid, cid__cid=couid)
+    
+    # 测试用
+    if debug:
+        models.SignInfo.objects.create(sid=stu.sid, cid=stu.cid)
+    
     if stu.exists():
         # 获取课程详细信息
         time = datetime.datetime.now()
-        couinfo = models.CouOnClass.objects.filter(cid=couid, cday=str(time.weekday())).values('ctime')
-        if not couinfo.exists():
-            # 返回类型后面将会使用字典代替 目前使用布尔告知签到成功与否
-            return False
-        else:
+        if time >= cousignid.timestart and time <=cousignid.timeend :
             # 写入签到信息
             models.SignInfo.objects.create(sid=stu.sid, cid=stu.cid)
             return True
-    else:
-        return False
+    return False
 
 # 还需要添加过滤功能 只有存在的课程才允许生成二维码
 def get_qrcode(request, cid):
