@@ -145,11 +145,11 @@ def set_sign(cid, time_start, time_end, debug=False):
     # 测试用
     if debug:
         return models.CouSignInfo.objects.create(cid=course, timestart=time_start, timeend=time_end)
-    
+
     # 如果开始时间大于结束时间 或 还有正在进行中的签到 不予继续创建签到
     if time_start > time_end or cousign_info.exists():
         return None
-    
+
     cousign = models.CouSignInfo.objects.create(cid=course, timestart=time_start, timeend=time_end)
     return cousign
 
@@ -171,11 +171,11 @@ def publish_sign(request, cid):
 # 学生签到函数
 def student_sign(stuid, couid, cousignid, debug=False):
     stu = models.StuToCourse.objects.get(sid__sid=stuid, cid__cid=couid)
-    
+
     # 测试用
     if debug:
         models.SignInfo.objects.create(sid=stu.sid, cid=stu.cid)
-    
+
     if stu.exists():
         # 获取课程详细信息
         time = datetime.datetime.now()
@@ -212,10 +212,6 @@ def student(request):
         cou_name = models.Course.objects.get(cid=cou_id).cname
         cou_name = str(cou_name)
         context['courses'].append(cou_name)
-        # today = timezone.now().date()
-        # room_loc = models.CouOnClass.objects.get(Q(cid=cou_id) & Q(ctime-today=timedelta(days=0))).rid__rloc
-        # room_loc = str(room_loc)
-        # context['room_loc'].append(room_loc)
     return render(request, 'AdminLTE/student.html', context)
 
 
@@ -235,7 +231,34 @@ def student_course(request):
 
 
 def teacher(request):
+    v = request.COOKIES.get('log_t')
+    id = str(v)
+    info = models.Teacher.objects.get(tid=id)
+    courses = models.Course.objects.filter(tid=id)
+    # context = {'info':info, 'courses':[], 'locations':[]}
+    context = {'info':info, 'courses':[]}
+    for cou in courses:
+        cou_id = cou.cid
+        cou_id = str(cou_id)
+        print(cou_id)
+        cou_name = models.Course.objects.get(cid=cou_id).cname
+        cou_name = str(cou_name)
+        context['courses'].append(cou_name)
     return render(request, 'AdminLTE/teacher.html')
+
+
+def teacher_course(request):
+    v = request.COOKIES.get('log_t')
+    id = str(v)
+    info = models.Teacher.objects.get(tid=id)
+    course = models.Course.objects.filter(tid__tid=id).values('cid__cid', 'cid__cname')
+    for cou in course:
+        print(cou)
+    context = {
+        'info' : info,
+        'course' : course,
+    }
+    return render(request, 'AdminLTE/teacher_course.html', context)
 
 
 def super(request):

@@ -71,7 +71,7 @@
     <!-- Main Sidebar Container -->
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
       <!-- Brand Logo -->
-      <a href={%url 'teacher' %} class="brand-link">
+      <a href="#" class="brand-link">
         <img src="{%static "dist/img/AdminLTELogo.png" %}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
         <span class="brand-text font-weight-light">签到系统 | 教师端</span>
       </a>
@@ -160,12 +160,12 @@
         <div class="container-fluid">
           <div class="row mb-2">
             <div class="col-sm-6">
-              <h1 class="m-0 text-dark">个人信息</h1>
+              <h1 class="m-0 text-dark">课表</h1>
             </div><!-- /.col -->
             <div class="col-sm-6">
               <ol class="breadcrumb float-sm-right">
                 <li class="breadcrumb-item"><a href="#">主页</a></li>
-                <li class="breadcrumb-item active">个人信息</li>
+                <li class="breadcrumb-item active">课表</li>
               </ol>
             </div><!-- /.col -->
           </div><!-- /.row -->
@@ -176,150 +176,103 @@
       <!-- Main content -->
       <section class="content">
         <div class="container-fluid">
-          <!-- Small boxes (Stat box) -->
-          <div class="row">
-            <div class="col-lg-3 col-6">
-              <!-- small box -->
-              <div class="small-box bg-info">
-                <div class="inner">
-                  <h3>工号</h3>
-
-                  <p>{{ info.tid }}</p>
-                </div>
-                <div class="icon">
-                  <i class="ion ion-bag"></i>
-                </div>
-              </div>
-            </div>
-            <!-- ./col -->
-            <div class="col-lg-3 col-6">
-              <!-- small box -->
-              <div class="small-box bg-success">
-                <div class="inner">
-                  <h3>70<sup style="font-size: 20px">/120</sup></h3>
-
-                  <p>已签到</p>
-                </div>
-                <div class="icon">
-                  <i class="ion ion-stats-bars"></i>
-                </div>
-              </div>
-            </div>
-            <!-- ./col -->
-            <div class="col-lg-3 col-6">
-              <!-- small box -->
-              <div class="small-box bg-warning">
-                <div class="inner">
-                  <h3>44</h3>
-
-                  <p>后续课程</p>
-                </div>
-                <div class="icon">
-                  <i class="ion ion-person-add"></i>
-                </div>
-              </div>
-            </div>
-            <!-- ./col -->
-            <div class="col-lg-3 col-6">
-              <!-- small box -->
-              <div class="small-box bg-danger">
-                <div class="inner">
-                  <h3>65</h3>
-
-                  <p>未签到</p>
-                </div>
-                <div class="icon">
-                  <i class="ion ion-pie-graph"></i>
-                </div>
-              </div>
-            </div>
-            <!-- ./col -->
-          </div>
-          <!-- /.row -->
           <!-- Main row -->
           <div class="row">
-            <!-- Left col -->
-            <section class="col-lg-12 connectedSortable">
-
-              <!-- TO DO List -->
-              <div class="card">
-                <div class="card-header">
-                  <h3 class="card-title">
-                    <i class="ion ion-clipboard mr-1"></i>
-                    今日课程
-                  </h3>
-
-                  <div class="card-tools">
-                    <span>{% now " Y年m月d日 D " %}</span>
-                  </div>
-                </div>
-                <!-- /.card-header -->
-                <div class="card-body">
-                  <ul class="todo-list" data-widget="todo-list">
-                    {% for course in courses %}
-                    <li>
-                      <!-- drag handle -->
-                      <span class="handle">
-                        <i class="fas fa-ellipsis-v"></i>
-                        <i class="fas fa-ellipsis-v"></i>
-                      </span>
-                      <!-- checkbox -->
-                      <div class="icheck-primary d-inline ml-2">
-                        <input type="checkbox" value="" name="todo1" id="todoCheck1">
-                        <label for="todoCheck1"></label>
-                      </div>
-                      <!-- todo text -->
-                      <span class="text">{{ course }}</span>
-                      <!-- Emphasis label -->
-                      <!-- <small class="badge badge-danger"><i class="far fa-clock"></i> 2 mins</small> -->
-                    </li>
-                    {% endfor %}
-                    <!-- 按照以下格式输出今日课程及签到状态信息(checked属性) -->
-                    <li>
-                      <!-- drag handle -->
-                      <span class="handle">
-                        <i class="fas fa-ellipsis-v"></i>
-                        <i class="fas fa-ellipsis-v"></i>
-                      </span>
-                      <!-- checkbox -->
-                      <div class="icheck-primary d-inline ml-2">
-                        <input type="checkbox" value="" name="todo1">
-                        <label for="todoCheck1"></label>
-                      </div>
-                      <!-- todo text -->
-                      <span class="text">测试输入 | 课程 2020-05-08 14:00 </span>
-                      <!-- Emphasis label -->
-                      <!-- <small class="badge badge-danger"><i class="far fa-clock"></i> 2 mins</small> -->
-                    </li>
-                    <li>
-                      <!-- drag handle -->
-                      <span class="handle">
-                        <i class="fas fa-ellipsis-v"></i>
-                        <i class="fas fa-ellipsis-v"></i>
-                      </span>
-                      <!-- checkbox -->
-                      <div class="icheck-primary d-inline ml-2">
-                        <input type="checkbox" checked=true value="" name="todo1">
-                        <label for="todoCheck1"></label>
-                      </div>
-                      <!-- todo text -->
-                      <span class="text">测试输入 | 课程 | 已签到 2020-05-08 14:00 </span>
-                      <!-- Emphasis label -->
-                      <!-- <small class="badge badge-danger"><i class="far fa-clock"></i> 2 mins</small> -->
-                    </li>
-                  </ul>
-                </div>
-                <!-- /.card-body -->
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">课程表</h3>
               </div>
-              <!-- /.card -->
-            </section>
-            <!-- /.Left col -->
-            <!-- right col (We are only adding the ID to make the widgets sortable)>
-          <section class="col-lg-5 connectedSortable">
+              <!-- /.card-header -->
+              <div class="card-body">
+                <table class="table table-bordered">
+                  <thead>
+                    <!-- 表格头首日周几应与当日周几相同，然后以此类推一个礼拜周期 -->
+                    <tr>
+                      <th style="width:90px">上课时间</th>
+                      <th>周一</th><th>周二</th><th>周三</th><th>周四</th><th>周五</th><th>周六</th><th>周日</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <!--
+                     表格所需数据：上课时间、课名、老师名、上课教室、签到状况
+                     并且需要结合当前时间来判断课程是否已经授完课的状况
+                     利用<span class="badge bg-xx"></span>来进行颜色标识
+                     其中xx：未签到danger 已签到success 下节课warning 老师未安排签到primary 未到授课时间去掉bg属性
+                     具体结合运行结果看下列代码
+                    -->
+                    <tr>
+                      <td>第一大节<br>08:00</td>
+                      <td>法律[罗翔]<br>致高楼B111<br><span class="badge bg-danger">未签到</span></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>第二大节<br>09:50</td>
+                      <td></td>
+                      <td>计算机[罗翔]<br>致高楼A111<br><span class="badge bg-success">已签到</span></td>
+                      <td></td>
+                      <td>计算机[罗翔]<br>致高楼A111<br><span class="badge bg-success">已签到</span></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>第三大节<br>14:00</td>
+                      <td></td>
+                      <td></td>
+                      <td>计算机[罗翔]<br>致高楼A111<br><span class="badge bg-success">已签到</span></td>
+                      <td></td>
+                      <td>法律[罗翔]<br>致高楼A111<br><span class="badge bg-primary">未安排</span></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>第四大节<br>14:50</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td>英语[罗翔]<br>致高楼A111<br><span class="badge bg-warning">下节课</span></td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>第五大节<br>18:30</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td>计算机[罗翔]<br>致高楼A111<br><span class="badge">未开始</span></td>
+                    </tr>
+                  <!-- {% for cou in course %}
+                    <tr>
+                      <td>{{cou.cid__cid}}</td>
+                      <td>{{cou.cid__cname}}</td>
+                      <td>
+                        <div class="progress progress-xs">
+                          <div class="progress-bar progress-bar-danger" style="width: 55%"></div>
+                        </div>
+                      </td>
+                      <td><span class="badge bg-danger">55%</span></td>
+                          < 四种样式 bg-warning bg-primary bg-success >
+                    </tr>
+                  {% endfor %} -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <!-- /.card -->
 
-          </section>
-          < right col -->
           </div>
+          <!-- /.col -->
+        </div>
           <!-- /.row (main row) -->
         </div><!-- /.container-fluid -->
       </section>
