@@ -169,7 +169,6 @@
       <section class="content">
         <div class="container-fluid">
           <!-- Main row -->
-          <!-- 按以下表格格式输出每周课表及签到状况（颜色标识） -->
           <div class="row">
           <div class="col-12">
             <div class="card">
@@ -180,15 +179,71 @@
               <div class="card-body">
                 <table class="table table-bordered">
                   <thead>
+                    <!-- 表格头首日周几应与当日周几相同，然后以此类推一个礼拜周期 -->
                     <tr>
-                      <th style="width: 10px">#</th>
-                      <th>课程名</th>
-                      <th>签到情况</th>
-                      <th style="width: 40px">完成度</th>
+                      <th style="width:90px">上课时间</th>
+                      <th>周一</th><th>周二</th><th>周三</th><th>周四</th><th>周五</th><th>周六</th><th>周日</th>
                     </tr>
                   </thead>
                   <tbody>
-                  {% for cou in course %}
+                    <!--
+                     表格所需数据：上课时间、课名、老师名、上课教室、签到状况
+                     并且需要结合当前时间来判断课程是否已经授完课的状况
+                     利用<span class="badge bg-xx"></span>来进行颜色标识
+                     其中xx：未签到danger 已签到success 下节课warning 老师未安排签到primary 未到授课时间去掉bg属性
+                     具体结合运行结果看下列代码
+                    -->
+                    <tr>
+                      <td>第一大节<br>08:00</td>
+                      <td>法律[罗翔]<br>致高楼B111<br><span class="badge bg-danger">未签到</span></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>第二大节<br>09:50</td>
+                      <td></td>
+                      <td>计算机[罗翔]<br>致高楼A111<br><span class="badge bg-success">已签到</span></td>
+                      <td></td>
+                      <td>计算机[罗翔]<br>致高楼A111<br><span class="badge bg-success">已签到</span></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>第三大节<br>14:00</td>
+                      <td></td>
+                      <td></td>
+                      <td>计算机[罗翔]<br>致高楼A111<br><span class="badge bg-success">已签到</span></td>
+                      <td></td>
+                      <td>法律[罗翔]<br>致高楼A111<br><span class="badge bg-primary">未安排</span></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>第四大节<br>14:50</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td>英语[罗翔]<br>致高楼A111<br><span class="badge bg-warning">下节课</span></td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>第五大节<br>18:30</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td>计算机[罗翔]<br>致高楼A111<br><span class="badge">未开始</span></td>
+                    </tr>
+                  <!-- {% for cou in course %}
                     <tr>
                       <td>{{cou.cid__cid}}</td>
                       <td>{{cou.cid__cname}}</td>
@@ -198,21 +253,11 @@
                         </div>
                       </td>
                       <td><span class="badge bg-danger">55%</span></td>
-                          <!-- 四种样式 bg-warning bg-primary bg-success -->
+                          < 四种样式 bg-warning bg-primary bg-success >
                     </tr>
-                  {% endfor %}  
+                  {% endfor %} -->
                   </tbody>
                 </table>
-              </div>
-              <!-- /.card-body -->
-              <div class="card-footer clearfix">
-                <ul class="pagination pagination-sm m-0 float-right">
-                  <li class="page-item"><a class="page-link" href="#">«</a></li>
-                  <li class="page-item"><a class="page-link" href="#">1</a></li>
-                  <li class="page-item"><a class="page-link" href="#">2</a></li>
-                  <li class="page-item"><a class="page-link" href="#">3</a></li>
-                  <li class="page-item"><a class="page-link" href="#">»</a></li>
-                </ul>
               </div>
             </div>
             <!-- /.card -->

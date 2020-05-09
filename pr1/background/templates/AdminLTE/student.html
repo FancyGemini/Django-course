@@ -184,8 +184,10 @@
               </div>
             </div>
             <!-- ./col -->
+            <!-- 所有计数均写在<h3>标签里 -->
             <div class="col-lg-3 col-6">
               <!-- small box -->
+              <!-- 已签到课程计数，需要此学生已签到次数和它所要上的课的节数 -->
               <div class="small-box bg-success">
                 <div class="inner">
                   <h3>70<sup style="font-size: 20px">/120</sup></h3>
@@ -200,6 +202,7 @@
             <!-- ./col -->
             <div class="col-lg-3 col-6">
               <!-- small box -->
+              <!-- 后续课程计数，需要此学生未上过的课的节数 -->
               <div class="small-box bg-warning">
                 <div class="inner">
                   <h3>44</h3>
@@ -214,6 +217,7 @@
             <!-- ./col -->
             <div class="col-lg-3 col-6">
               <!-- small box -->
+              <!-- 未签到课程计数，需要此学生未签到但是上过的课的节数 -->
               <div class="small-box bg-danger">
                 <div class="inner">
                   <h3>65</h3>
@@ -233,7 +237,12 @@
             <!-- Left col -->
             <section class="col-lg-12 connectedSortable">
 
-              <!-- TO DO List -->
+              <!--
+                今日课程部分
+                需要数据：课程名称、上课时间（与服务器相同的日期的课程）
+                可以看结合网页输出查看下列代码
+                利用checked属性划掉已经签到过的课程
+               -->
               <div class="card">
                 <div class="card-header">
                   <h3 class="card-title">
@@ -248,24 +257,6 @@
                 <!-- /.card-header -->
                 <div class="card-body">
                   <ul class="todo-list" data-widget="todo-list">
-                    {% for course in courses %}
-                    <li>
-                      <!-- drag handle -->
-                      <span class="handle">
-                        <i class="fas fa-ellipsis-v"></i>
-                        <i class="fas fa-ellipsis-v"></i>
-                      </span>
-                      <!-- checkbox -->
-                      <div class="icheck-primary d-inline ml-2">
-                        <input type="checkbox" value="" name="todo1" id="todoCheck1">
-                        <label for="todoCheck1"></label>
-                      </div>
-                      <!-- todo text -->
-                      <span class="text">{{ course }}</span>
-                      <!-- Emphasis label -->
-                      <!-- <small class="badge badge-danger"><i class="far fa-clock"></i> 2 mins</small> -->
-                    </li>
-                    {% endfor %}
                     <!-- 按照以下格式输出今日课程及签到状态信息(checked属性) -->
                     <li>
                       <!-- drag handle -->
