@@ -199,7 +199,7 @@ def get_qrcode(request, cousign):
     cousignid = parse_UUID(cousign)
     try:
         cou = models.CouSignInfo.objects.get(id = cousignid)
-        img = qrcode.make('http://' + request.get_host() + '/student/sign/' + cousignid)
+        img = qrcode.make('http://' + request.get_host() + '/student/sign/' + str(cou.id))
         buf = BytesIO()
         img.save(buf)
         img_stream = buf.getvalue()
