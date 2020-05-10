@@ -7,7 +7,8 @@
     {% if cousign %}
         开始时间 {{ starttime }}
         结束时间 {{ endtime }}
-        <img src="http://{{ host }}/qrcode/{{cousign.cid.cid}}"></img>
+        <img src="http://{{ host }}/qrcode/{{cousign.id}}"></img>
+        http://{{ host }}/student/sign/{{cousign.id}}
     {% else %}
         还有正在进行中的签到
     {% endif %}

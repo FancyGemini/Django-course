@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+import uuid
 
 # Create your models here.
 
@@ -134,6 +135,7 @@ class CouOnClass(models.Model):
 class CouSignInfo(models.Model):
     objects = models.Manager()
     
+    id = models.UUIDField(primary_key=True, auto_created=True, default=uuid.uuid4, editable=False)
     cid = models.ForeignKey(Course, on_delete=models.CASCADE)
     timestart = models.DateTimeField('开始时间', blank=False, default=timezone.now)
     timeend = models.DateTimeField('结束时间', blank=False, default=timezone.now)
@@ -143,7 +145,7 @@ class CouSignInfo(models.Model):
         verbose_name_plural = '课程签到'
     
     def __str__(self):
-        return self.cid.cid
+        return self.id
     
 
 # --------------------------
@@ -153,7 +155,7 @@ class SignInfo(models.Model):
     objects = models.Manager()
 
     sid = models.ForeignKey(Student, on_delete=models.CASCADE)
-    # 更换属性名太麻烦了 这里的cid对应的老师发布的课程签到信息
+    # 更换属性名太麻烦了 这里的cid对应的老师发布的课程签到信息cousignid
     cid = models.ForeignKey(CouSignInfo, on_delete=models.CASCADE)
     # 签到时间 默认空 说明没进行签到 如果签到成功 则修改其值
     signtime = models.DateTimeField('签到时间', null=True, blank=True, auto_now_add=True)

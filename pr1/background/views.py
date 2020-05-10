@@ -62,6 +62,7 @@ def waiting(request):
         corr = info
         corr_pwd = str(corr.spasswd)
         if corr_pwd == pwd:
+            #if request.POST.get('sign')
             re = redirect('/student')
             re.set_cookie('log_s', str(info.sid))
             return re
@@ -87,6 +88,10 @@ def logout(request):
     re.delete_cookie('log_t')
     return re
 
+def parse_UUID(uuid):
+    uuid = str(uuid)
+    uuid_str = ''.join(uuid.split('-'))
+    return uuid_str
 
 # 测试用
 def class_test(request):
@@ -140,31 +145,66 @@ def publish_sign(request, cid):
 
 # 学生签到函数
 def student_sign(stuid, couid, cousignid, debug=False):
-    stu = models.StuToCourse.objects.get(sid__sid=stuid, cid__cid=couid)
-
-    # 测试用
-    if debug:
-        models.SignInfo.objects.create(sid=stu.sid, cid=stu.cid)
-
-    if stu.exists():
+    signInfo = {
+        'isOutTime' : True,     # 是否在签到时间段
+        'isInClass' : False,    # 是否为本课程学生
+        'isSigned' : False      # 是否已经签到
+    }
+    
+    try:
+        stu = models.StuToCourse.objects.get(sid__sid=stuid, cid__cid=couid)
+        signInfo['isInClass'] = True
+        
+        # 测试用
+        if debug:
+            models.SignInfo.objects.create(sid=stu.sid, cid=stu.cid)
+            return signInfo
+        
+        if models.SignInfo.objects.filter(cid=cousignid).exists():
+            signInfo['isSigned'] = True
+            return signInfo
+        
         # 获取课程详细信息
         time = datetime.datetime.now()
-        if time >= cousignid.timestart and time <=cousignid.timeend :
+        if time >= cousignid.timestart and time <= cousignid.timeend :
             # 写入签到信息
             models.SignInfo.objects.create(sid=stu.sid, cid=stu.cid)
-            return True
-    return False
+            signInfo['isOutTime'] = False
+    except Exception:
+        pass
+    
+    return signInfo
 
-# 还需要添加过滤功能 只有存在的课程才允许生成二维码
-def get_qrcode(request, cid):
-    cou = models.Course.objects.filter(cid = str(cid))
-    if cou.exists():
-        img = qrcode.make(str(cid))
+# 学生签到界面
+def sign_page(request, cousign):
+    sid = str(request.COOKIES.get('log_s'))
+    cou = parse_UUID(cousign)
+    context = {}
+    try:
+        stu = models.Student.objects.get(sid = sid)
+        cousignid = models.CouSignInfo.objects.get(id = cou)
+        context = student_sign(str(sid), cousignid.cid.cid, cou)
+        request.session['signinfo'] = context
+        request.session['signflag'] = True
+        print(request.session['signflag'])
+        return redirect('/student')
+    except Exception:
+        context['cousign'] = cou
+        request.session['signinfo'] = context
+        re = redirect('/')
+        return re
+        
+# 获取对应签到二维码
+def get_qrcode(request, cousign):
+    cousignid = parse_UUID(cousign)
+    try:
+        cou = models.CouSignInfo.objects.get(id = cousignid)
+        img = qrcode.make('http://' + request.get_host() + '/student/sign/' + cousignid)
         buf = BytesIO()
         img.save(buf)
         img_stream = buf.getvalue()
         return HttpResponse(img_stream, content_type='image/png')
-    else:
+    except Exception:
         return HttpResponse('')
 
 
@@ -175,6 +215,12 @@ def student(request):
     courses = models.StuToCourse.objects.filter(sid=id)
     # context = {'info':info, 'courses':[], 'locations':[]}
     context = {'info':info, 'courses':[]}
+    request.session.setdefault('signflag', False)
+    signinfo = request.session.get('signinfo')
+    request.session.set_expiry(5)
+    request.session.clear_expired()
+    if signinfo:
+        context.update(signinfo)
     for cou in courses:
         cou_id = cou.cid
         cou_id = str(cou_id)

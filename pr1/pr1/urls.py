@@ -33,5 +33,6 @@ urlpatterns = [
     re_path(r'class_form/(\d+)', bg.classform),
     re_path(r'publish/(\d+)', bg.publish_sign),
     re_path(r'qiandao/(\d+)', bg.qianndao_test),
-    re_path(r'qrcode/(\d+)', bg.get_qrcode),
+    re_path(r'qrcode/(\w{8}-\w{4}-\w{4}-\w{4}-\w{12})', bg.get_qrcode),
+    re_path(r'student/sign/(\w{8}-\w{4}-\w{4}-\w{4}-\w{12})', bg.sign_page),
 ]

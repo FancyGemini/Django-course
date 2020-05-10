@@ -305,6 +305,37 @@
           </div>
           <!-- /.row (main row) -->
         </div><!-- /.container-fluid -->
+        {% if request.session.signflag %}
+        <div class="modal fade" id="modal-default" style="display: none;" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h4 class="modal-title">签到</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">×</span>
+                </button>
+              </div>
+              <div class="modal-body">
+              {% if not isInClass %}
+                <p>你不在该课程中！</p>
+              {% elif isOutTime %}
+                <p>不在签到时间段！</p>
+              {% elif isSigned %}
+                <p>请勿重复签到！</p>
+              {% else %}
+                <p>签到成功！</p>
+              {% endif %}
+              </div>
+              <div class="modal-footer justify-content-between">
+                <div></div><button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>
+              </div>
+            </div>
+            <!-- /.modal-content -->
+          </div>
+        <!-- /.modal-dialog -->
+        </div>
+      <!-- /.modal -->
+      {% endif %}
       </section>
       <!-- /.content -->
     </div>
@@ -331,6 +362,13 @@
   <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
   <script>
     $.widget.bridge('uibutton', $.ui.button)
+    {% if request.session.signflag %}
+    $(function(){
+      $("#modal-default").modal({
+        backdrop : false
+      });
+    });
+    {% endif %}
   </script>
   <!-- Bootstrap 4 -->
   <script src="{%static "plugins/bootstrap/js/bootstrap.bundle.min.js" %}"></script>
