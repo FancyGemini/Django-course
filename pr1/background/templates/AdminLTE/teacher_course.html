@@ -105,7 +105,7 @@
                     <p>授课信息</p>
                   </a>
                 </li>
-                {% if info.tauth=='admin' %}
+                {% if info.tauth == 'admin' %}
                 <li class="nav-item">
                   <a href={%url 'super' %} class="nav-link active">
                     <i class="far fa-circle nav-icon"></i>
@@ -253,8 +253,8 @@
                     </tr>
                   <!-- {% for cou in course %}
                     <tr>
-                      <td>{{cou.cid__cid}}</td>
-                      <td>{{cou.cid__cname}}</td>
+                      <td>{{cou.cid}}</td>
+                      <td>{{cou.cname}}</td>
                       <td>
                         <div class="progress progress-xs">
                           <div class="progress-bar progress-bar-danger" style="width: 55%"></div>

@@ -206,7 +206,7 @@ def teacher(request):
     info = models.Teacher.objects.get(tid=id)
     courses = models.Course.objects.filter(tid=id)
     # context = {'info':info, 'courses':[], 'locations':[]}
-    context = {'info':info, 'courses':[]}
+    context = {'info':info, 'auth':info.tauth, 'courses':[]}
     for cou in courses:
         cou_id = cou.cid
         cou_id = str(cou_id)
@@ -214,14 +214,13 @@ def teacher(request):
         cou_name = models.Course.objects.get(cid=cou_id).cname
         cou_name = str(cou_name)
         context['courses'].append(cou_name)
-    return render(request, 'AdminLTE/teacher.html')
+    return render(request, 'AdminLTE/teacher.html', context)
 
 
 def teacher_course(request):
     v = request.COOKIES.get('log_t')
-    id = str(v)
-    info = models.Teacher.objects.get(tid=id)
-    course = models.Course.objects.filter(tid__tid=id).values('cid__cid', 'cid__cname')
+    info = models.Teacher.objects.get(tid=str(v))
+    course = models.Course.objects.filter(tid=info).values('cid', 'cname')
     for cou in course:
         print(cou)
     context = {
