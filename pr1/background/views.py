@@ -88,42 +88,12 @@ def logout(request):
     return re
 
 
-# 拟在这里实现利用摄像头扫描并识别二维码的功能
-# 注释部分为网上找到的相关模板（未运行过）
-def call_camera(request):
-    pass
-'''    def decodeDisplay(img):
-        barcodes = pyzbar.decode(image)
-        for barcode in barcodes:
-            (x, y, w, h) = barcode.rect
-            cv2.rectangle(image, (x,y), (x + w, y + h), (0, 255, 0), 2)
-            barcodeData = barcode.data.decode("UTF-8")
-            barcodeType = barcode.barcodeType
-            text = "{} ({})".format(barcodeData, barcodeType)
-            cv2.putText(image, text, (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, .5, (225, 225, 225), 2)
-        return image
-    def detect():
-        camera = cv2.VideoCapture(0)
-        whlie(True):
-            ret, frame = camera.read()
-            gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-            im = decodeDisplay(gray)
-            cv2.waitKey(5)
-            cv2.imshow("camera", im)
-            if cv2.waitKey(1) == ord('Q'):
-                break
-        camera.release()
-        cv2.destroyAllWindows()
-    if __name__ == '__main__':
-        detect()'''
-
 # 测试用
 def class_test(request):
     class_list = models.Course.objects.all().values('cid', 'cname', 'tid__tname')
     context = {
         'all_class' : class_list,
     }
-
     return render(request, 'class.html', context)
 
 # 测试用
@@ -263,7 +233,3 @@ def teacher_course(request):
 
 def super(request):
     return render(request, 'AdminLTE/super.html')
-
-
-def index(request):
-    return render(request, 'AdminLTE/index.html')
