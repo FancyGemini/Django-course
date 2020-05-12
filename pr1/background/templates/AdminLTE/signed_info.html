@@ -160,12 +160,12 @@
         <div class="container-fluid">
           <div class="row mb-2">
             <div class="col-sm-6">
-              <h1 class="m-0 text-dark">签到信息</h1>
+              <h1 class="m-0 text-dark">授课课表</h1>
             </div><!-- /.col -->
             <div class="col-sm-6">
               <ol class="breadcrumb float-sm-right">
                 <li class="breadcrumb-item"><a href="#">主页</a></li>
-                <li class="breadcrumb-item active">签到信息</li>
+                <li class="breadcrumb-item active">授课课表</li>
               </ol>
             </div><!-- /.col -->
           </div><!-- /.row -->
@@ -179,99 +179,56 @@
           <!-- Main row -->
           <div class="row">
           <div class="col-12">
-            <div class="card">
-              <div class="card-header">
-                <h3 class="card-title">课程表</h3>
-              </div>
-              <!-- /.card-header -->
-              <div class="card-body">
-                <table class="table table-bordered">
-                  <thead>
-                    <!-- 表格头首日周几应与当日周几相同，然后以此类推一个礼拜周期 -->
-                    <tr>
-                      <th style="width:90px">上课时间</th>
-                      <th>周一</th><th>周二</th><th>周三</th><th>周四</th><th>周五</th><th>周六</th><th>周日</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <!--
-                     表格所需数据：上课时间、课名、老师名、上课教室、签到状况
-                     并且需要结合当前时间来判断课程是否已经授完课的状况
-                     利用<span class="badge bg-xx"></span>来进行颜色标识
-                     其中xx：未签到danger 已签到success 下节课warning 老师未安排签到primary 未到授课时间去掉bg属性
-                     具体结合运行结果看下列代码
-                    -->
-                    <tr>
-                      <td>第一大节<br>08:00</td>
-                      <td>法律[罗翔]<br>致高楼B111<br><span class="badge bg-danger">未签到</span></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>第二大节<br>09:50</td>
-                      <td></td>
-                      <td>计算机[罗翔]<br>致高楼A111<br><span class="badge bg-success">已签到</span></td>
-                      <td></td>
-                      <td>计算机[罗翔]<br>致高楼A111<br><span class="badge bg-success">已签到</span></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>第三大节<br>14:00</td>
-                      <td></td>
-                      <td></td>
-                      <td>计算机[罗翔]<br>致高楼A111<br><span class="badge bg-success">已签到</span></td>
-                      <td></td>
-                      <td>法律[罗翔]<br>致高楼A111<br><span class="badge bg-primary">未安排</span></td>
-                      <td></td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>第四大节<br>14:50</td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td>英语[罗翔]<br>致高楼A111<br><span class="badge bg-warning">下节课</span></td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>第五大节<br>18:30</td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td>计算机[罗翔]<br>致高楼A111<br><span class="badge">未开始</span></td>
-                    </tr>
-                  <!-- {% for cou in course %}
-                    <tr>
-                      <td>{{cou.cid}}</td>
-                      <td>{{cou.cname}}</td>
-                      <td>
-                        <div class="progress progress-xs">
-                          <div class="progress-bar progress-bar-danger" style="width: 55%"></div>
-                        </div>
-                      </td>
-                      <td><span class="badge bg-danger">55%</span></td>
-                          < 四种样式 bg-warning bg-primary bg-success >
-                    </tr>
-                  {% endfor %} -->
-                  </tbody>
-                </table>
-              </div>
-            </div>
-            <!-- /.card -->
 
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">已签到信息表</h3>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+              <table class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                  <th>学生姓名</th>
+                  <th>学号</th>
+                  <th>课程名称</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                  {% for sig in signed %}
+                  <td>{{ sig[2] }}</td>
+                  <td>{{ sig[1] }}</td>
+                  <td>{{ sig[0] }}</td>
+                  {% endfor %}
+                </tr>
+                </tbody>
+                <tfoot>
+                <tr>
+                  <th>学生姓名</th>
+                  <th>学号</th>
+                  <th>课程名称</th>
+                </tr>
+                </tfoot>
+              </table>
+            </div>
+            <!-- /.card-body -->
+          </div>
+          <!-- /.card -->
           </div>
           <!-- /.col -->
+          <div class="row">
+            <div class="col-sm-12 col-md-5">
+              <div class="dataTables_info" id="example1_info" role="status" aria-live="polite">共{{ counts }}条签到信息，展示第{{ i*10+1 }}条到第{{ (i+1)*10+1 }}条签到信息</div>
+            </div>
+            <div class="col-sm-12 col-md-7">
+              <div class="dataTables_paginate paging_simple_numbers">
+                <ul class="pagination">
+                  {{ page_obj.page_html | safe }}
+                </ul>
+              </div>
+            </div>
+          </div>
         </div>
           <!-- /.row (main row) -->
         </div><!-- /.container-fluid -->
@@ -341,24 +298,6 @@ function getCookie()
   return "";
 }
 </script> -->
-
-<script>
-  $(function () {
-    $("#example1").DataTable({
-      "responsive": true,
-      "autoWidth": false,
-    });
-    $('#example2').DataTable({
-      "paging": true,
-      "lengthChange": false,
-      "searching": false,
-      "ordering": true,
-      "info": true,
-      "autoWidth": false,
-      "responsive": true,
-    });
-  });
-</script>
 </body>
 
 </html>

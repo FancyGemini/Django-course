@@ -27,7 +27,7 @@ class Student(models.Model):
         verbose_name_plural = '学生信息'
 
     def __str__(self):
-        return '[' + self.sid + ']' +  self.sname
+        return self.sid
 
 # --------------------------
 # teacher table
@@ -50,7 +50,7 @@ class Teacher(models.Model):
         verbose_name_plural = '教师信息'
 
     def __str__(self):
-        return '[' + self.tid + ']' +  self.tname
+        return self.tid
 
 # --------------------------
 # course table
@@ -68,7 +68,7 @@ class Course(models.Model):
         verbose_name_plural = '课程信息'
 
     def __str__(self):
-        return '[' + self.cid + ']' +  self.cname
+        return self.cid
 
 # --------------------------
 # courses student chosen table
@@ -84,7 +84,7 @@ class StuToCourse(models.Model):
         verbose_name_plural = '选课信息'
 
     def __str__(self):
-        return '[' + self.cid.cid + ']' +  self.cid.cname
+        return self.cid.cid
 
 # --------------------------
 # classroom table
@@ -100,7 +100,7 @@ class Classroom(models.Model):
         verbose_name_plural = '教室信息'
 
     def __str__(self):
-        return '[' + self.rid + ']' +  self.rloc
+        return self.rid
 
 # --------------------------
 # courses on class table
@@ -134,7 +134,7 @@ class CouOnClass(models.Model):
 # course sign info table
 class CouSignInfo(models.Model):
     objects = models.Manager()
-    
+
     id = models.UUIDField(primary_key=True, auto_created=True, default=uuid.uuid4, editable=False)
     cid = models.ForeignKey(Course, on_delete=models.CASCADE)
     timestart = models.DateTimeField('开始时间', blank=False, default=timezone.now)
@@ -143,10 +143,10 @@ class CouSignInfo(models.Model):
     class Meta:
         verbose_name = '课程签到'
         verbose_name_plural = '课程签到'
-    
+
     def __str__(self):
         return self.id
-    
+
 
 # --------------------------
 # student sign info table

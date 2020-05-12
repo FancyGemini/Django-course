@@ -26,6 +26,7 @@ urlpatterns = [
     path('student/', bg.student, name='student'),
     path('student_course/', bg.student_course, name='student_course'),
     path('teacher_course/', bg.teacher_course, name='teacher_course'),
+    path('signed_info/', bg.signed_info, name='signed_info'),
     path('teacher/', bg.teacher, name='teacher'),
     path('super/', bg.super, name='super'),
     path('waiting/', bg.waiting, name='waiting'),

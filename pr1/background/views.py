@@ -8,6 +8,8 @@ from django.utils import timezone
 from io import BytesIO
 from background import models
 from django.core.exceptions import ObjectDoesNotExist
+from django.core.serializers import serialize
+import json
 import qrcode
 import arrow
 import datetime
@@ -131,7 +133,7 @@ def sign_page(request, cousign):
         request.session['signinfo'] = context
         re = redirect('/')
         return re
-        
+
 # 获取对应签到二维码
 def get_qrcode(request, cousign):
     cousignid = u.parse_UUID(cousign)
@@ -212,6 +214,40 @@ def teacher_course(request):
         'course' : course,
     }
     return render(request, 'AdminLTE/teacher_course.html', context)
+
+
+def signed_info(request):
+    v = request.COOKIES.get('log_t')
+    t_id = models.Teacher.objects.get(tid=str(v))
+    signed = []
+    courses = models.Course.objects.filter(tid=t_id)
+    # print(courses)
+    for course_0 in courses:
+        course_id = str(course_0.cid)
+        course_name = models.Course.objects.get(cid=course_id).cname
+        # print(course_name)
+        signeds = models.SignInfo.objects.filter(cid__cid__cid=course_id)
+        print(signeds)
+        for signed_0 in signeds:
+            s_id = signed_0
+            s_name = models.Student.objects.get(sid=s_id).sname
+            s_tump = (course_name, s_id, s_name)
+            # print(s_tump)
+            # for debug:
+            for i in range(1, 50):
+                signed.append(s_tump)
+    counts = len(signed)
+    print(signed[0])
+    current_page = request.POST.get('page', 1)
+    page_obj = u.Pagination(per_page_num=16, current_page=current_page, all_count=counts)
+    context = {
+        'info' : t_id,
+        'signed' : signed,
+        'counts' : counts,
+    }
+    context["signed"] = context["signed"][page_obj.start:page_obj.end]
+    # print(context["signed"])
+    return render(request, 'AdminLTE/signed_info.html', context)
 
 
 def super(request):
