@@ -105,6 +105,12 @@
                     <p>授课信息</p>
                   </a>
                 </li>
+                <li class="nav-item">
+                  <a href={%url 'signed_info' %} class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>签到总览</p>
+                  </a>
+                </li>
                 {% if auth == 'admin' %}
                 <li class="nav-item">
                   <a href={%url 'super' %} class="nav-link active">
