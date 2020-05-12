@@ -226,12 +226,12 @@ def signed_info(request):
         course_id = str(course_0.cid)
         course_name = models.Course.objects.get(cid=course_id).cname
         # print(course_name)
-        signeds = models.SignInfo.objects.filter(cid__cid__cid=course_id)
+        signeds = models.SignInfo.objects.filter(cid__cid__cid=course_id).values('sid__sid', 'sid__sname')
         print(signeds)
         for signed_0 in signeds:
             s_id = signed_0
-            s_name = models.Student.objects.get(sid=s_id).sname
-            s_tump = (course_name, s_id, s_name)
+            s_name = s_id['sid__sname']
+            s_tump = [course_name, s_id['sid__sid'], s_name]
             # print(s_tump)
             # for debug:
             for i in range(1, 50):
@@ -244,6 +244,7 @@ def signed_info(request):
         'info' : t_id,
         'signed' : signed,
         'counts' : counts,
+        'page_obj' : None
     }
     context["signed"] = context["signed"][page_obj.start:page_obj.end]
     # print(context["signed"])

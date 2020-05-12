@@ -195,13 +195,13 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
                   {% for sig in signed %}
-                  <td>{{ sig[2] }}</td>
-                  <td>{{ sig[1] }}</td>
-                  <td>{{ sig[0] }}</td>
-                  {% endfor %}
+                <tr>
+                  <td>{{ sig.2 }}</td>
+                  <td>{{ sig.1 }}</td>
+                  <td>{{ sig.0 }}</td>
                 </tr>
+                  {% endfor %}
                 </tbody>
                 <tfoot>
                 <tr>
@@ -219,12 +219,12 @@
           <!-- /.col -->
           <div class="row">
             <div class="col-sm-12 col-md-5">
-              <div class="dataTables_info" id="example1_info" role="status" aria-live="polite">共{{ counts }}条签到信息，展示第{{ i*10+1 }}条到第{{ (i+1)*10+1 }}条签到信息</div>
+              <div class="dataTables_info" id="example1_info" role="status" aria-live="polite">共{{ counts }}条签到信息，展示第#条到第#条签到信息</div>
             </div>
             <div class="col-sm-12 col-md-7">
               <div class="dataTables_paginate paging_simple_numbers">
                 <ul class="pagination">
-                  {{ page_obj.page_html | safe }}
+                  {#{ page_obj.page_html | safe }#}
                 </ul>
               </div>
             </div>
