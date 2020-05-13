@@ -166,12 +166,12 @@
         <div class="container-fluid">
           <div class="row mb-2">
             <div class="col-sm-6">
-              <h1 class="m-0 text-dark">授课课表</h1>
+              <h1 class="m-0 text-dark">签到情况</h1>
             </div><!-- /.col -->
             <div class="col-sm-6">
               <ol class="breadcrumb float-sm-right">
                 <li class="breadcrumb-item"><a href="#">主页</a></li>
-                <li class="breadcrumb-item active">授课课表</li>
+                <li class="breadcrumb-item active">签到情况</li>
               </ol>
             </div><!-- /.col -->
           </div><!-- /.row -->
@@ -191,22 +191,30 @@
                   <h3 class="card-title">已签到信息表</h3>
                 </div>
                 <!-- /.card-header -->
+                      <form method="get" action="." target="_blank">
                 <div class="card-body">
                   <div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                    <div class="row">
+                      <div class="col-sm-12 col-md-6">
+                        <div id="example1_filter" class="dataTables_filter"><label>关键字搜索<input name="search" type="search" class="form-control form-control-sm" placeholder="" aria-controls="example1"></label></div>
+                      </div>
+                    </div>
                     <table id="example1" class="table table-bordered table-striped dataTable dtr-inline" role="grid" aria-describedby="example1_info">
                       <thead>
                         <tr>
                           <th>学生姓名</th>
                           <th>学号</th>
                           <th>课程名称</th>
+                          <th>签到时间</th>
                         </tr>
                       </thead>
                       <tbody>
                         {% for sig in signed %}
                         <tr>
+                          <td>{{ sig.3 }}</td>
                           <td>{{ sig.2 }}</td>
-                          <td>{{ sig.1 }}</td>
                           <td>{{ sig.0 }}</td>
+                          <td>{{ sig.1 }}</td>
                         </tr>
                         {% endfor %}
                       </tbody>
@@ -215,6 +223,7 @@
                           <th>学生姓名</th>
                           <th>学号</th>
                           <th>课程名称</th>
+                          <th>签到时间</th>
                         </tr>
                       </tfoot>
                     </table>
@@ -223,7 +232,10 @@
                       <div class="col-sm-12 col-md-3">
                         <div class="dataTables_info" id="example1_info" role="status" aria-live="polite">共{{ counts }}条签到信息</div>
                       </div>
-                      <div class="col-sm-12 col-md-7">
+                      <div class="col-sm-12 col-md-3">
+                        <!-- <div class="dataTables_info" id="example1_info" role="status" aria-live="polite">共{{ counts }}条签到信息</div> -->
+                      </div>
+                      <div class="col-sm-12 col-md-6">
                         <div class="dataTables_paginate paging_simple_numbers" id="example1_paginate">
                           <ul class="pagination">
                             {{ page_obj.page_html | safe }}
@@ -233,6 +245,7 @@
                     </div>
                   </div>
                 </div>
+              </form>
                 <!-- /.card-body -->
               </div>
               <!-- /.card -->
@@ -294,19 +307,7 @@
   <script src="{%static "dist/js/pages/dashboard.js" %}"></script>
   <!-- AdminLTE for demo purposes -->
   <script src="{%static "dist/js/demo.js" %}"></script>
-  <!-- <script>
-function getCookie()
-{
-  var ca = document.cookie.split(';');
-  for(var i=0; i<ca.length; i++)
-  {
-    var c = ca[i].trim();
-    console.log(c)
-    if (c.indexOf("log_s")==0) return c.substring(5,c.length);
-  }
-  return "";
-}
-</script> -->
+
 </body>
 
 </html>
