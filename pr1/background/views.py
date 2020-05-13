@@ -98,13 +98,33 @@ def classform(request, cid):
     context = { 'cid' : cid }
     return render(request, 'class_form.html', context)
 
+# 教师发布签到页面
+def publish_sign(request):
+    v = request.COOKIES.get('log_t')
+    info = models.Teacher.objects.get(tid=str(v))
+    cou = models.Course.objects.filter(tid__tid=str(v))
+    context = {
+        'info' : info,
+        'cou' : cou
+    }
+    return render(request, 'AdminLTE/publish_sign.html', context)
+
+# 发布签到页面表单
+def publish_form(request, cid):
+    v = request.COOKIES.get('log_t')
+    info = models.Teacher.objects.get(tid=str(v))
+    context = {
+        'info' : info,
+        'cid' : cid
+    }
+    return render(request, 'AdminLTE/class_form.html', context)
 
 # 教师发布签到页面
 # 还需要加入权限判断 只有老师能访问该页面 目前测试阶段暂不加
-def publish_sign(request, cid):
+def create_sign(request, cid):
     context = {}
     request.encoding = 'utf-8'
-    tfmt = "YYYY-MM-DD[T]hh:mm:ss-ZZZ"
+    tfmt = "YYYY-MM-DD-hh:mm:ss-ZZZ"
     if request.POST:
         utc = arrow.get(request.POST['start']+":00-Asia/Shanghai", tfmt)
         context['starttime'] = utc.datetime

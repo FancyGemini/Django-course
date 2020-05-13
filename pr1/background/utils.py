@@ -12,12 +12,25 @@ def check_cookies(request):
             is_stu = False
     return True
 
+def check_auth(cookies):
+    """
+    检查当前用户权限
+    :param cokies: request.COOKIES
+    :return: int 权限等级 0:管理员教师 1:普通教师 2:学生 -1:无cookies
+    """
+    v = cookies.get('log_s')
+    if not v:
+        v = cookies.get('log_t')
+        if not v:
+            return -1
+        else:
+            return 1 if models.Teacher.objects.get(tid=str(v)).tauth == 'normal' else 0
+    else:
+        return 2
+
 def parse_UUID(uuid):
-    """ 解析UUID 去掉-
-    :param uuid: 需要解析的UUID
-    :return: str
-=======
- 解析UUID 去掉-\n
+    """
+    解析UUID 去掉-\n
     :param uuid: 需要解析的UUID\n
     :return: str\n
     """
@@ -27,11 +40,7 @@ def parse_UUID(uuid):
 
 # 创建课程签到信息函数
 def set_sign(cid, time_start, time_end, debug=False):
-    """ 创建课程签到信息函数
-    :param cid: 课程编号
-    :param time_start: 开始时间
-    :param time_end: 结束时间
-=======
+    """
     创建课程签到信息函数\n
     :param cid: 课程编号\n
     :param time_start: 开始时间\n
@@ -53,11 +62,7 @@ def set_sign(cid, time_start, time_end, debug=False):
 
 # 学生签到函数
 def student_sign(stuid, couid, cousignid, debug=False):
-    """ 学生签到函数
-    :param stuid: 学生学号
-    :param couid: 课程编号
-    :param cousignid: 签到UUID
-=======
+    """ 
     学生签到函数\n
     :param stuid: 学生学号\n
     :param couid: 课程编号\n
