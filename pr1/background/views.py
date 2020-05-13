@@ -98,13 +98,33 @@ def classform(request, cid):
     context = { 'cid' : cid }
     return render(request, 'class_form.html', context)
 
+# 教师发布签到页面
+def publish_sign(request):
+    v = request.COOKIES.get('log_t')
+    info = models.Teacher.objects.get(tid=str(v))
+    cou = models.Course.objects.filter(tid__tid=str(v))
+    context = {
+        'info' : info,
+        'cou' : cou
+    }
+    return render(request, 'AdminLTE/publish_sign.html', context)
+
+# 发布签到页面表单
+def publish_form(request, cid):
+    v = request.COOKIES.get('log_t')
+    info = models.Teacher.objects.get(tid=str(v))
+    context = {
+        'info' : info,
+        'cid' : cid
+    }
+    return render(request, 'AdminLTE/class_form.html', context)
 
 # 教师发布签到页面
 # 还需要加入权限判断 只有老师能访问该页面 目前测试阶段暂不加
-def publish_sign(request, cid):
+def create_sign(request, cid):
     context = {}
     request.encoding = 'utf-8'
-    tfmt = "YYYY-MM-DD[T]hh:mm:ss-ZZZ"
+    tfmt = "YYYY-MM-DD-hh:mm:ss-ZZZ"
     if request.POST:
         utc = arrow.get(request.POST['start']+":00-Asia/Shanghai", tfmt)
         context['starttime'] = utc.datetime
@@ -235,31 +255,33 @@ def signed_info(request):
             s_tump = [course_name + course_id, s_id['signtime'], s_id['sid__sid'], '']
             # print(s_tump)
             # for debug:
-            for i in range(1, 51):
+            for i in range(1, 20):
                 s_tump[3] = s_name + str(cnt)
                 cnt += 1
                 signed.append(s_tump)
     counts = len(signed)
     # print(signed[0])
-    data = request.GET.get('data', '')
-    print(data)
     page = request.GET.get('page', 1)
     search = request.GET.get('search', '')
+    print(search)
     signed_filt = []
     if len(search.strip()) != 0:
         for si in signed:
-            for i in range(0, counts):
-                if search.strip() in si[i]:
+            for i in range(0, 4):
+                if search.strip() in str(si[i]):
                     signed_filt.append(si)
+                    break
         counts = len(signed_filt)
     else:
         signed_filt = signed
-    page_obj = u.Pagination(per_page_num=8, current_page=page, all_count=counts)
+    page_obj = u.Pagination(per_page_num=8, current_page=page, all_count=counts, search_str=search)
     context = {
         'info' : t_id,
         'signed' : signed_filt,
         'counts' : counts,
-        'page_obj' : page_obj
+        'page_obj' : page_obj,
+        'current_page' : page,
+        'search' : search,
     }
     context["signed"] = context["signed"][page_obj.start:page_obj.end]
     # print(context["signed"])
