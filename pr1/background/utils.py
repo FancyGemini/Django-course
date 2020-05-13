@@ -177,7 +177,7 @@ class Pagination(object):
 
         for i in range(pager_start, pager_end):
             if i == self.current_page:
-                temp = '<li class="paginate_button page-item active"><a href="?page=%s" class="page-link">%s</a></li>' % (i, i,)
+                temp = '<li id="ac_page" name="ac_page" class="paginate_button page-item active"><a href="?page=%s" class="page-link">%s</a></li>' % (i, i,)
             else:
                 temp = '<li class="paginate_button page-item"><a href="?page=%s" class="page-link">%s</a></li>' % (i, i,)
             page_html_list.append(temp)

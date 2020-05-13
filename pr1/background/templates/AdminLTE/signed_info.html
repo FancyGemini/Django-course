@@ -191,13 +191,14 @@
                   <h3 class="card-title">已签到信息表</h3>
                 </div>
                 <!-- /.card-header -->
-                      <form method="get" action="." target="_blank">
                 <div class="card-body">
                   <div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap4">
                     <div class="row">
+                      <form method="get" action="." target="_blank">
                       <div class="col-sm-12 col-md-6">
-                        <div id="example1_filter" class="dataTables_filter"><label>关键字搜索<input name="search" type="search" class="form-control form-control-sm" placeholder="" aria-controls="example1"></label></div>
+                        <div id="example1_filter" class="dataTables_filter"><label>关键字搜索<input name="search" id="search" type="search" class="form-control form-control-sm" placeholder="" aria-controls="example1"></label></div>
                       </div>
+                      </form>
                     </div>
                     <table id="example1" class="table table-bordered table-striped dataTable dtr-inline" role="grid" aria-describedby="example1_info">
                       <thead>
@@ -245,7 +246,6 @@
                     </div>
                   </div>
                 </div>
-              </form>
                 <!-- /.card-body -->
               </div>
               <!-- /.card -->
@@ -307,7 +307,19 @@
   <script src="{%static "dist/js/pages/dashboard.js" %}"></script>
   <!-- AdminLTE for demo purposes -->
   <script src="{%static "dist/js/demo.js" %}"></script>
+  <script>
+      $(document).ready(function(){
+          $.extend({
+            var search = $("#search").val();
+            var page = $("#ac_page").val();
+            $.get("/signed_info/",{'search':search, 'page':page}, function(ret){
+              console.log("ok");
+            })
+          })
 
+          setInterval()
+      });
+  </script>
 </body>
 
 </html>

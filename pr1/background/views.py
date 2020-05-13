@@ -235,22 +235,22 @@ def signed_info(request):
             s_tump = [course_name + course_id, s_id['signtime'], s_id['sid__sid'], '']
             # print(s_tump)
             # for debug:
-            for i in range(1, 51):
+            for i in range(1, 20):
                 s_tump[3] = s_name + str(cnt)
                 cnt += 1
                 signed.append(s_tump)
     counts = len(signed)
     # print(signed[0])
-    data = request.GET.get('data', '')
-    print(data)
     page = request.GET.get('page', 1)
     search = request.GET.get('search', '')
+    print(search)
     signed_filt = []
     if len(search.strip()) != 0:
         for si in signed:
-            for i in range(0, counts):
-                if search.strip() in si[i]:
+            for i in range(0, 4):
+                if search.strip() in str(si[i]):
                     signed_filt.append(si)
+                    break
         counts = len(signed_filt)
     else:
         signed_filt = signed
