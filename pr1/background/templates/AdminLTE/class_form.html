@@ -106,13 +106,13 @@
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a href={%url 'publish_sign' %} class="nav-link">
+                  <a href={%url 'publish_sign' %} class="nav-link active">
                     <i class="far fa-circle nav-icon"></i>
                     <p>发布签到</p>
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a href={%url 'signed_info' %} class="nav-link active">
+                  <a href={%url 'signed_info' %} class="nav-link">
                     <i class="far fa-circle nav-icon"></i>
                     <p>签到总览</p>
                   </a>
@@ -172,12 +172,12 @@
         <div class="container-fluid">
           <div class="row mb-2">
             <div class="col-sm-6">
-              <h1 class="m-0 text-dark">签到情况</h1>
+              <h1 class="m-0 text-dark">课程总览</h1>
             </div><!-- /.col -->
             <div class="col-sm-6">
               <ol class="breadcrumb float-sm-right">
                 <li class="breadcrumb-item"><a href="#">主页</a></li>
-                <li class="breadcrumb-item active">签到情况</li>
+                <li class="breadcrumb-item active">创建签到</li>
               </ol>
             </div><!-- /.col -->
           </div><!-- /.row -->
@@ -190,87 +190,45 @@
         <div class="container-fluid">
           <!-- Main row -->
           <div class="row">
-            <div class="col-12">
-
-              <div class="card">
-                <div class="card-header">
-                  <h3 class="card-title">已签到信息表</h3>
-                </div>
-                <!-- /.card-header -->
-                      <form method="get" action="." target="_blank">
-                <div class="card-body">
-                  <div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap4">
-                    <form method="get" action="." target="_blank" id="form_ps">
-                      <div class="row">
-                        <div class="col-6">
-                          <div class="form-group">
-                            <div class="dataTables_paginate paging_simple_numbers" id="example1_paginate">
-                              <ul class="pagination">
-                                {{ page_obj.page_html | safe }}
-                              </ul>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="col-2"></div>
-                        <div class="col-4">
-                          <div class="form-group">
-                            <div class="input-group input-group-sm">
-                              <input type="text" class="form-control" name="search" id="search" value="{{ search }}">
-                              <span class="input-group-append">
-                                <button type="submit" name="cle_btn" id="cle_btn" class="btn btn-danger btn-flat">清空</button>
-                                <button type="submit" name="sea_btn" id="sea_btn" class="btn btn-info btn-flat">搜索</button>
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </form>
-                    <table id="example1" class="table table-bordered table-striped dataTable dtr-inline" role="grid" aria-describedby="example1_info">
-                      <thead>
-                        <tr>
-                          <th>学生姓名</th>
-                          <th>学号</th>
-                          <th>课程名称</th>
-                          <th>签到时间</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {% for sig in signed %}
-                        <tr>
-                          <td>{{ sig.3 }}</td>
-                          <td>{{ sig.2 }}</td>
-                          <td>{{ sig.0 }}</td>
-                          <td>{{ sig.1 }}</td>
-                        </tr>
-                        {% endfor %}
-                      </tbody>
-                      <tfoot>
-                        <tr>
-                          <th>学生姓名</th>
-                          <th>学号</th>
-                          <th>课程名称</th>
-                          <th>签到时间</th>
-                        </tr>
-                      </tfoot>
-                    </table>
-
-                    <div class="row">
-                      <div class="col-sm-12 col-md-12">
-                        <div class="dataTables_info" id="example1_info" role="status" aria-live="polite">共{{ counts }}条签到信息, 现在在第{{ current_page }}页</div>
-                      </div>
-                      <div class="col-sm-12 col-md-3">
-                        <!-- <div class="dataTables_info" id="example1_info" role="status" aria-live="polite">共{{ counts }}条签到信息</div> -->
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </form>
-                <!-- /.card-body -->
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">发布签到</h3>
               </div>
-              <!-- /.card -->
+              <!-- /.card-header -->
+            <div class="card-body p-0">
+            <div>
+                <div class="card-body">
+                <div class="form-group">
+                <form action="{% url 'publish' cid %}" method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label>开始时间:</label>
+                    <div class="input-group date" id="datetimepicker9" data-target-input="nearest">
+                        <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker9" name="start"/>
+                        <div class="input-group-append" data-target="#datetimepicker9" data-toggle="datetimepicker">
+                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>结束时间:</label>
+                    <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
+                        <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker1" name="end"/>
+                        <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
+                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <input class="btn btn-block btn-outline-success" type='submit'/>
+                </div>
+                </form>
+                </div>
             </div>
-            <!-- /.col -->
-          </div>
+            </div>
+          <!-- /.col -->
+        </div>
           <!-- /.row (main row) -->
         </div><!-- /.container-fluid -->
       </section>
@@ -299,6 +257,31 @@
   <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
   <script>
     $.widget.bridge('uibutton', $.ui.button)
+    var time = "";
+    $(function(){
+        $('#datetimepicker9').datetimepicker({
+            format: 'YYYY-MM-DD-HH:mm',
+            timePicker: true,
+            timePickerIncrement: 1,
+            icons: {
+                time: "fa fa-clock",
+                date: "fa fa-calendar",
+                up: "fa fa-arrow-up",
+                down: "fa fa-arrow-down"
+            }
+        });
+        $('#datetimepicker1').datetimepicker({
+            format: 'YYYY-MM-DD-HH:mm',
+            timePicker: true,
+            timePickerIncrement: 1,
+            icons: {
+                time: "fa fa-clock",
+                date: "fa fa-calendar",
+                up: "fa fa-arrow-up",
+                down: "fa fa-arrow-down"
+            }
+        });
+    })
   </script>
   <!-- Bootstrap 4 -->
   <script src="{%static "plugins/bootstrap/js/bootstrap.bundle.min.js" %}"></script>
@@ -326,39 +309,11 @@
   <script src="{%static "dist/js/pages/dashboard.js" %}"></script>
   <!-- AdminLTE for demo purposes -->
   <script src="{%static "dist/js/demo.js" %}"></script>
-  <script>
-    $(document).ready(function() {
-      $("#sea_btn").click(function() {
-        $(this).ajaxSubmit({
-          type: "get",
-          url: "/signed_info/",
-          data: {
-            'search': {{search}},
-            'page': {{current_page}}
-          },
-          success: function(data) {
+  <!-- <script>
+</script> -->
 
-            console.log("ok");
-          }
-        })
-      });
-      $("#cle_btn").click(function() {
-        $("#search").val("");
-        $(this).ajaxSubmit({
-          type: "get",
-          url: "/signed_info/",
-          data: {
-            'search': '',
-            'page': {{current_page}}
-          },
-          success: function(data) {
-
-            console.log("ok");
-          }
-        })
-      });
-    });
-  </script>
+<script>
+</script>
 </body>
 
 </html>

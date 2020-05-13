@@ -17,6 +17,8 @@ from django.contrib import admin
 from django.urls import path
 from django.urls import re_path
 from background import views as bg
+from django.conf.urls import handler404
+from django.conf.urls import handler500
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -31,9 +33,13 @@ urlpatterns = [
     path('super/', bg.super, name='super'),
     path('waiting/', bg.waiting, name='waiting'),
     path('classtest/', bg.class_test, name='class'),
-    re_path(r'class_form/(\d+)', bg.classform),
-    re_path(r'publish/(\d+)', bg.publish_sign),
+    path('publish_sign/', bg.publish_sign, name='publish_sign'),
+    re_path(r'publish_sign/publish_form/(\d+)/', bg.publish_form, name='publish_form'),
+    re_path(r'publish_sign/publish_form/publish/(\d+)/', bg.create_sign, name='publish'),
     re_path(r'qiandao/(\d+)', bg.qianndao_test),
     re_path(r'qrcode/(\w{8}-\w{4}-\w{4}-\w{4}-\w{12})', bg.get_qrcode),
     re_path(r'student/sign/(\w{8}-\w{4}-\w{4}-\w{4}-\w{12})', bg.sign_page),
 ]
+
+#handler404 = bg.page_not_found
+#handler500 = bg.page_error
