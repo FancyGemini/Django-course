@@ -254,12 +254,14 @@ def signed_info(request):
         counts = len(signed_filt)
     else:
         signed_filt = signed
-    page_obj = u.Pagination(per_page_num=8, current_page=page, all_count=counts)
+    page_obj = u.Pagination(per_page_num=8, current_page=page, all_count=counts, search_str=search)
     context = {
         'info' : t_id,
         'signed' : signed_filt,
         'counts' : counts,
-        'page_obj' : page_obj
+        'page_obj' : page_obj,
+        'current_page' : page,
+        'search' : search,
     }
     context["signed"] = context["signed"][page_obj.start:page_obj.end]
     # print(context["signed"])

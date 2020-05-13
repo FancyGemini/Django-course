@@ -97,7 +97,7 @@ def student_sign(stuid, couid, cousignid, debug=False):
 
 # 分页器代码：
 class Pagination(object):
-    def __init__(self, current_page, all_count, per_page_num=10, pager_count=7):
+    def __init__(self, current_page, all_count, per_page_num=10, pager_count=7, search_str=''):
         """
         封装分页相关数据
         :param current_page: 当前页
@@ -124,6 +124,7 @@ class Pagination(object):
 
         self.all_count = all_count
         self.per_page_num = per_page_num
+        self.search_str = search_str
 
         # 总页码
         all_pager, tmp = divmod(all_count, per_page_num)
@@ -165,29 +166,29 @@ class Pagination(object):
                     pager_end = self.current_page + self.pager_count_half + 1
 
         page_html_list = []
-        first_page = '<li class="paginate_button page-item"><a href="?page=%s" class="page-link">&lt;&lt;</a></li>' % (1)
+        first_page = '<li class="paginate_button page-item"><a href="?search=%s&page=%s" class="page-link">&lt;&lt;</a></li>' % (self.search_str, 1)
         page_html_list.append(first_page)
 
         if self.current_page <= 1:
             prev_page = '<li id="example1_previous" class="paginate_button page-item previous disabled"><a href="#" class="page-link">&lt;</a></li>'
         else:
-            prev_page = '<li id="example1_previous" class="paginate_button page-item previous"><a href="?page=%s" class="page-link">&lt;</a></li>' % (self.current_page - 1,)
+            prev_page = '<li id="example1_previous" class="paginate_button page-item previous"><a href="?search=%s&page=%s" class="page-link">&lt;</a></li>' % (self.search_str, self.current_page - 1,)
 
         page_html_list.append(prev_page)
 
         for i in range(pager_start, pager_end):
             if i == self.current_page:
-                temp = '<li id="ac_page" name="ac_page" class="paginate_button page-item active"><a href="?page=%s" class="page-link">%s</a></li>' % (i, i,)
+                temp = '<li id="ac_page" name="ac_page" class="paginate_button page-item active"><a href="?search=%s&page=%s" class="page-link">%s</a></li>' % (self.search_str, i, i,)
             else:
-                temp = '<li class="paginate_button page-item"><a href="?page=%s" class="page-link">%s</a></li>' % (i, i,)
+                temp = '<li class="paginate_button page-item"><a href="?search=%s&page=%s" class="page-link">%s</a></li>' % (self.search_str, i, i,)
             page_html_list.append(temp)
 
         if self.current_page >= self.all_pager:
             next_page = '<li id="example1_next" class="paginate_button page-item next disabled"><a href="#" class="page-link">&gt;</a></li>'
         else:
-            next_page = '<li id="example1_next" class="paginate_button page-item next"><a href="?page=%s" class="page-link">&gt;</a></li>' % (self.current_page + 1,)
+            next_page = '<li id="example1_next" class="paginate_button page-item next"><a href="?search=%s&page=%s" class="page-link">&gt;</a></li>' % (self.search_str,self.current_page + 1,)
         page_html_list.append(next_page)
 
-        last_page = '<li class="paginate_button page-item"><a href="?page=%s" class="page-link">&gt;&gt;</a></li>' % (self.all_pager,)
+        last_page = '<li class="paginate_button page-item"><a href="?search=%s&page=%s" class="page-link">&gt;&gt;</a></li>' % (self.search_str, self.all_pager,)
         page_html_list.append(last_page)
         return ''.join(page_html_list)

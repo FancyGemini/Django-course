@@ -193,13 +193,31 @@
                 <!-- /.card-header -->
                 <div class="card-body">
                   <div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap4">
-                    <div class="row">
-                      <form method="get" action="." target="_blank">
-                      <div class="col-sm-12 col-md-6">
-                        <div id="example1_filter" class="dataTables_filter"><label>关键字搜索<input name="search" id="search" type="search" class="form-control form-control-sm" placeholder="" aria-controls="example1"></label></div>
+                    <form method="get" action="." target="_blank" id="form_ps">
+                      <div class="row">
+                        <div class="col-6">
+                          <div class="form-group">
+                            <div class="dataTables_paginate paging_simple_numbers" id="example1_paginate">
+                              <ul class="pagination">
+                                {{ page_obj.page_html | safe }}
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-2"></div>
+                        <div class="col-4">
+                          <div class="form-group">
+                            <div class="input-group input-group-sm">
+                              <input type="text" class="form-control" name="search" id="search" value="{{ search }}">
+                              <span class="input-group-append">
+                                <button type="submit" name="cle_btn" id="cle_btn" class="btn btn-danger btn-flat">清空</button>
+                                <button type="submit" name="sea_btn" id="sea_btn" class="btn btn-info btn-flat">搜索</button>
+                              </span>
+                            </div>
+                          </div>
+                        </div>
                       </div>
-                      </form>
-                    </div>
+                    </form>
                     <table id="example1" class="table table-bordered table-striped dataTable dtr-inline" role="grid" aria-describedby="example1_info">
                       <thead>
                         <tr>
@@ -230,18 +248,11 @@
                     </table>
 
                     <div class="row">
-                      <div class="col-sm-12 col-md-3">
-                        <div class="dataTables_info" id="example1_info" role="status" aria-live="polite">共{{ counts }}条签到信息</div>
+                      <div class="col-sm-12 col-md-12">
+                        <div class="dataTables_info" id="example1_info" role="status" aria-live="polite">共{{ counts }}条签到信息, 现在在第{{ current_page }}页</div>
                       </div>
                       <div class="col-sm-12 col-md-3">
                         <!-- <div class="dataTables_info" id="example1_info" role="status" aria-live="polite">共{{ counts }}条签到信息</div> -->
-                      </div>
-                      <div class="col-sm-12 col-md-6">
-                        <div class="dataTables_paginate paging_simple_numbers" id="example1_paginate">
-                          <ul class="pagination">
-                            {{ page_obj.page_html | safe }}
-                          </ul>
-                        </div>
                       </div>
                     </div>
                   </div>
@@ -308,17 +319,37 @@
   <!-- AdminLTE for demo purposes -->
   <script src="{%static "dist/js/demo.js" %}"></script>
   <script>
-      $(document).ready(function(){
-          $.extend({
-            var search = $("#search").val();
-            var page = $("#ac_page").val();
-            $.get("/signed_info/",{'search':search, 'page':page}, function(ret){
-              console.log("ok");
-            })
-          })
+    $(document).ready(function() {
+      $("#sea_btn").click(function() {
+        $(this).ajaxSubmit({
+          type: "get",
+          url: "/signed_info/",
+          data: {
+            'search': {{search}},
+            'page': {{current_page}}
+          },
+          success: function(data) {
 
-          setInterval()
+            console.log("ok");
+          }
+        })
       });
+      $("#cle_btn").click(function() {
+        $("#search").val("");
+        $(this).ajaxSubmit({
+          type: "get",
+          url: "/signed_info/",
+          data: {
+            'search': '',
+            'page': {{current_page}}
+          },
+          success: function(data) {
+
+            console.log("ok");
+          }
+        })
+      });
+    });
   </script>
 </body>
 
