@@ -192,3 +192,61 @@ class Pagination(object):
         last_page = '<li class="paginate_button page-item"><a href="?search=%s&page=%s" class="page-link">&gt;&gt;</a></li>' % (self.search_str, self.all_pager,)
         page_html_list.append(last_page)
         return ''.join(page_html_list)
+
+
+class CourseTable(object):
+    def __init__(self, rloc, cid, cname, ctime, cday):
+        self.rloc = rloc
+        self.cid = cid
+        self.cname = cname
+        self.ctime = ctime
+        self.cday = cday
+
+    def tcourse_html(self):
+        tcourse_table_html = []
+        today_time = int(datetime.datetime.now().strftime("%Y%m%d"))
+        today_weekday = datetime.datetime.now().weekday()
+        wkds_enum = ('周一', '周二', '周三', '周四', '周五', '周六', '周日')
+        clock_enum = [
+            ('0800', 0),
+            ('0950', 1),
+            ('1400', 2),
+            ('1550', 3),
+            ('1830', 4),
+        ]
+        clock_enum_rev = ['08:00', '09:50', '14:00', '15:50', '18:30']
+        clock_enum_end = ['09:35', '11:25', '15:35', '17:25', '20:45']
+        tcourse_table_html.append('<thead><tr><th style="width:90px">上课时间</th>')
+        for i in range(0, 7):
+            html_str = '<th>%s</th>' % (str(wkds_enum[(i+today_weekday)%7]))
+            tcourse_table_html.append(html_str)
+        tcourse_table_html.append('</tr></thead><tbody>')
+        fill_table_tag = [
+            [0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0]
+        ]
+        loop_tot = len(self.cid) + 1
+        for i in range(1, loop_tot):
+            on_time = int(self.ctime[i-1].strftime("%Y%m%d"))
+            on_clock = int(self.ctime[i-1].strftime("%H%M"))
+            if ((on_time-today_time) >=0) and ((on_time-today_time) < 7):
+                fill_table_tag[clock_enum[on_clock]][on_time-today_time] = i
+        for j in range(0, 5):
+            tcourse_table_html.append('<tr>')
+            for i in range(-1, 7):
+                if i == -1:
+                    html_str = '<th>第%s大节<br>%s ~<br>%s</th>' % (str(j+1), clock_enum_rev[j], clock_enum_end[j])
+                    tcourse_table_html.append(html_str)
+                else:
+                    tag_grid = fill_table_tag[j][i]
+                    if tag_grid > 0:
+                        html_str = '<th>%s<br>%s<br>%s</th>' % (self.cname[tag_grid], "["+self.cid[tag_grid]+"]", self.rloc[tag_grid])
+                    else:
+                        html_str = '<th><br><br></th>'
+                    tcourse_table_html.append(html_str)
+            tcourse_table_html.append('</tr>')
+        tcourse_table_html.append('</tbody>')
+        return ''.join(tcourse_table_html)

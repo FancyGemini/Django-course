@@ -207,11 +207,25 @@ def teacher_course(request):
     v = request.COOKIES.get('log_t')
     info = models.Teacher.objects.get(tid=str(v))
     course = models.Course.objects.filter(tid=info).values('cid', 'cname')
+    # c_info = []
+    rlocs = []
+    cids = []
+    cnames = []
+    cdays = []
+    ctimes = []
     for cou in course:
-        print(cou)
+        c_rdts = models.CouOnClass.objects.filter(cid__cid=cou['cid']).values('rid__rloc', 'cday', 'ctime')
+        for c_rdt in c_rdts:
+            cids.append(cou['cid'])
+            cnames.append(cou['cname'])
+            rlocs.append(c_rdt['rid__rloc'])
+            cdays.append(c_rdt['cday'])
+            ctimes.append(c_rdt['ctime'])
+    tcourse_obj = u.CourseTable(rloc=rlocs, cid=cids, cname=cnames, cday=cdays, ctime=ctimes)
+    # print(tcourse_obj.tcourse_html())
     context = {
         'info' : info,
-        'course' : course,
+        'tcourse_obj' : tcourse_obj,
     }
     return render(request, 'AdminLTE/teacher_course.html', context)
 
@@ -232,13 +246,13 @@ def signed_info(request):
         for signed_0 in signeds:
             s_id = signed_0
             s_name = s_id['sid__sname']
-            s_tump = [course_name + course_id, s_id['signtime'], s_id['sid__sid'], '']
+            s_tump = [course_name + course_id, s_id['signtime'], s_id['sid__sid'], s_name]
             # print(s_tump)
             # for debug:
-            for i in range(1, 20):
-                s_tump[3] = s_name + str(cnt)
-                cnt += 1
-                signed.append(s_tump)
+            # for i in range(1, 20):
+            #     s_tump[3] = s_name + str(cnt)
+            #     cnt += 1
+            signed.append(s_tump)
     counts = len(signed)
     # print(signed[0])
     page = request.GET.get('page', 1)
