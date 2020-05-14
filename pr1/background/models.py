@@ -115,7 +115,7 @@ class CouOnClass(models.Model):
         ('4', '周四'),
         ('5', '周五'),
         ('6', '周六'),
-        ('0', '周日')
+        ('7', '周日')
     }
 
     cid = models.ForeignKey(Course, on_delete=models.CASCADE)

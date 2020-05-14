@@ -41,5 +41,5 @@ urlpatterns = [
     re_path(r'student/sign/(\w{8}-\w{4}-\w{4}-\w{4}-\w{12})', bg.sign_page),
 ]
 
-#handler404 = bg.page_not_found
-#handler500 = bg.page_error
+handler404 = bg.page_not_found
+handler500 = bg.page_error
