@@ -215,16 +215,32 @@ def teacher(request):
     v = request.COOKIES.get('log_t')
     id = str(v)
     info = models.Teacher.objects.get(tid=id)
-    courses = models.Course.objects.filter(tid=id)
-    # context = {'info':info, 'courses':[], 'locations':[]}
-    context = {'info':info, 'auth':info.tauth, 'courses':[]}
+    courses = models.Course.objects.filter(tid__tid=id).values('cid', 'cname')
+    cid = []
+    rloc = []
+    cname = []
+    ctime = []
     for cou in courses:
-        cou_id = cou.cid
-        cou_id = str(cou_id)
-        print(cou_id)
-        cou_name = models.Course.objects.get(cid=cou_id).cname
-        cou_name = str(cou_name)
-        context['courses'].append(cou_name)
+        time_loc = models.CouOnClass.objects.filter(cid__cid=cou['cid']).values('ctime', 'rid__rloc', 'cday')
+        for t_l in time_loc:
+            class_time = t_l['ctime']
+            print(class_time)
+            print(type(class_time))
+            class_day = (int(t_l['cday'])+1) % 7
+            now_time = datetime.datetime.now()
+            # print(str(class_day) + ' / ' + now_time.strftime("%w"))
+            if str(class_day) == now_time.strftime("%w"):
+                cid.append(cou['cid'])
+                cname.append(cou['cname'])
+                ctime.append(t_l['ctime'])
+                rloc.append(t_l['rid__rloc'])
+    ttoday_obj = u.TodayCourse(cid=cid, cname=cname, ctime=ctime, rloc=rloc)
+    # print(ttoday_obj.ttoday_html())
+    context = {
+        'info':info,
+        'auth':info.tauth,
+        'ttoday_obj':ttoday_obj,
+    }
     return render(request, 'AdminLTE/teacher.html', context)
 
 

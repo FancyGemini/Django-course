@@ -62,7 +62,7 @@ def set_sign(cid, time_start, time_end, debug=False):
 
 # 学生签到函数
 def student_sign(stuid, couid, cousignid, debug=False):
-    """ 
+    """
     学生签到函数\n
     :param stuid: 学生学号\n
     :param couid: 课程编号\n
@@ -199,6 +199,17 @@ class Pagination(object):
         return ''.join(page_html_list)
 
 
+clock_enum = {
+    '0800': 0,
+    '0950': 1,
+    '1400': 2,
+    '1550': 3,
+    '1830': 4,
+}
+clock_enum_rev = ['08:00', '09:50', '14:00', '15:50', '18:30']
+clock_enum_end = ['09:35', '11:25', '15:35', '17:25', '20:45']
+
+
 class CourseTable(object):
     def __init__(self, rloc, cid, cname, ctime, cday):
         self.rloc = rloc
@@ -210,15 +221,6 @@ class CourseTable(object):
     def tcourse_html(self):
         tcourse_table_html = []
         wkds_list = ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
-        clock_enum = {
-            '0800': 0,
-            '0950': 1,
-            '1400': 2,
-            '1550': 3,
-            '1830': 4,
-        }
-        clock_enum_rev = ['08:00', '09:50', '14:00', '15:50', '18:30']
-        clock_enum_end = ['09:35', '11:25', '15:35', '17:25', '20:45']
         tcourse_table_html.append('<thead><tr><th style="width:90px">上课时间</th>')
         for i in range(0, 7):
             html_str = '<th>%s</th>' % (str(wkds_list[i]))
@@ -253,3 +255,28 @@ class CourseTable(object):
             tcourse_table_html.append('</tr>')
         tcourse_table_html.append('</tbody>')
         return ''.join(tcourse_table_html)
+
+
+class TodayCourse(object):
+    def __init__(self, rloc, cid, cname, ctime):
+        self.rloc = rloc
+        self.cid = cid
+        self.cname = cname
+        self.ctime = ctime
+
+    def ttoday_html(self):
+        ttoday_course_html = []
+        html_str = ''
+        loop_len = len(self.cid)
+        now_clock = datetime.datetime.now().strftime("%H%M")
+        for i in range(0, loop_len):
+            ttoday_course_html.append('<li><span class="handle"><i class="fas fa-ellipsis-v"></i><i class="fas fa-ellipsis-v"></i></span><div class="icheck-primary d-inline ml-2">')
+            on_clock = self.ctime[i].strftime("%H%M")
+            on_clock_output = self.ctime[i].strftime("%H:%M")
+            if on_clock <= now_clock:
+                html_str = '<input type="checkbox" disabled=true checked=true value="" name="todo1" id="todoCheck1">'
+            else:
+                html_str = '<input type="checkbox" disabled=true value="" name="todo1" id="todoCheck1">'
+            ttoday_course_html.append(html_str)
+            ttoday_course_html.append('<label for="todoCheck1"></label><span class="text">%s[%s] %s 地点: %s</span></li>' % (self.cname[i], str(self.cid[i]), on_clock_output, self.rloc[i], ))
+        return ''.join(ttoday_course_html)
