@@ -54,7 +54,7 @@
       <ul class="navbar-nav ml-auto">
         <!-- 签到按钮 -->
         <li class="nav-item">
-          <a class="nav-link" href="#">
+          <a class="nav-link" href={%url 'publish_sign' %}>
             <i class="far fa-bell"></i>
           </a>
         </li>
@@ -117,9 +117,9 @@
                     <p>签到总览</p>
                   </a>
                 </li>
-                {% if auth == 'admin' %}
+                {% if info.tauth == 'admin' %}
                 <li class="nav-item">
-                  <a href={%url 'super' %} class="nav-link active">
+                  <a href={%url 'super' %} class="nav-link">
                     <i class="far fa-circle nav-icon"></i>
                     <p>教师管理</p>
                   </a>

@@ -42,7 +42,7 @@
           <a href={%url 'teacher' %} class="nav-link">首页</a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-          <a href="#" class="nav-link">{{info.sname}}</a>
+          <a href="#" class="nav-link">{{info.tname}}</a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
           <a href={%url 'logout' %} class="nav-link">登出</a>
@@ -54,7 +54,7 @@
       <ul class="navbar-nav ml-auto">
         <!-- 签到按钮 -->
         <li class="nav-item">
-          <a class="nav-link" href="#">
+          <a class="nav-link" href={%url 'publish_sign' %}>
             <i class="far fa-bell"></i>
           </a>
         </li>
@@ -100,9 +100,15 @@
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a href={%url 'teacher_course' %} class="nav-link active">
+                  <a href={%url 'teacher_course' %} class="nav-link">
                     <i class="far fa-circle nav-icon"></i>
                     <p>授课信息</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href={%url 'publish_sign' %} class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>发布签到</p>
                   </a>
                 </li>
                 <li class="nav-item">
@@ -111,14 +117,12 @@
                     <p>签到总览</p>
                   </a>
                 </li>
-                {% if info.tauth=='admin' %}
                 <li class="nav-item">
                   <a href={%url 'super' %} class="nav-link active">
                     <i class="far fa-circle nav-icon"></i>
                     <p>教师管理</p>
                   </a>
                 </li>
-                {% endif %}
               </ul>
             </li>
             <li class="nav-header">颜色标识</li>
@@ -166,12 +170,12 @@
         <div class="container-fluid">
           <div class="row mb-2">
             <div class="col-sm-6">
-              <h1 class="m-0 text-dark">个人信息</h1>
+              <h1 class="m-0 text-dark">教师管理</h1>
             </div><!-- /.col -->
             <div class="col-sm-6">
               <ol class="breadcrumb float-sm-right">
-                <li class="breadcrumb-item"><a href="#">主页</a></li>
-                <li class="breadcrumb-item active">个人信息</li>
+                <li class="breadcrumb-item">主页</li>
+                <li class="breadcrumb-item active"><a href="#">教师管理</a></li>
               </ol>
             </div><!-- /.col -->
           </div><!-- /.row -->
@@ -182,151 +186,137 @@
       <!-- Main content -->
       <section class="content">
         <div class="container-fluid">
-          <!-- Small boxes (Stat box) -->
-          <div class="row">
-            <div class="col-lg-3 col-6">
-              <!-- small box -->
-              <div class="small-box bg-info">
-                <div class="inner">
-                  <h3>学号</h3>
-
-                  <p>{{ info.sid }}</p>
-                </div>
-                <div class="icon">
-                  <i class="ion ion-bag"></i>
-                </div>
-              </div>
-            </div>
-            <!-- ./col -->
-            <div class="col-lg-3 col-6">
-              <!-- small box -->
-              <div class="small-box bg-success">
-                <div class="inner">
-                  <h3>70<sup style="font-size: 20px">/120</sup></h3>
-
-                  <p>已签到</p>
-                </div>
-                <div class="icon">
-                  <i class="ion ion-stats-bars"></i>
-                </div>
-              </div>
-            </div>
-            <!-- ./col -->
-            <div class="col-lg-3 col-6">
-              <!-- small box -->
-              <div class="small-box bg-warning">
-                <div class="inner">
-                  <h3>44</h3>
-
-                  <p>后续课程</p>
-                </div>
-                <div class="icon">
-                  <i class="ion ion-person-add"></i>
-                </div>
-              </div>
-            </div>
-            <!-- ./col -->
-            <div class="col-lg-3 col-6">
-              <!-- small box -->
-              <div class="small-box bg-danger">
-                <div class="inner">
-                  <h3>65</h3>
-
-                  <p>未签到</p>
-                </div>
-                <div class="icon">
-                  <i class="ion ion-pie-graph"></i>
-                </div>
-              </div>
-            </div>
-            <!-- ./col -->
-          </div>
           <!-- /.row -->
           <!-- Main row -->
           <div class="row">
-            <!-- Left col -->
-            <section class="col-lg-12 connectedSortable">
-
-              <!-- TO DO List -->
+            <div class="col-12">
               <div class="card">
                 <div class="card-header">
-                  <h3 class="card-title">
-                    <i class="ion ion-clipboard mr-1"></i>
-                    今日课程
-                  </h3>
-
-                  <div class="card-tools">
-                    <span>{% now " Y年m月d日 D " %}</span>
-                  </div>
+                  <h3 class="card-title">添加课程安排</h3>
                 </div>
                 <!-- /.card-header -->
-                <div class="card-body">
-                  <ul class="todo-list" data-widget="todo-list">
-                    {% for course in courses %}
-                    <li>
-                      <!-- drag handle -->
-                      <span class="handle">
-                        <i class="fas fa-ellipsis-v"></i>
-                        <i class="fas fa-ellipsis-v"></i>
-                      </span>
-                      <!-- checkbox -->
-                      <div class="icheck-primary d-inline ml-2">
-                        <input type="checkbox" value="" name="todo1" id="todoCheck1">
-                        <label for="todoCheck1"></label>
-                      </div>
-                      <!-- todo text -->
-                      <span class="text">{{ course }}</span>
-                      <!-- Emphasis label -->
-                      <!-- <small class="badge badge-danger"><i class="far fa-clock"></i> 2 mins</small> -->
-                    </li>
-                    {% endfor %}
-                    <!-- 按照以下格式输出今日课程及签到状态信息(checked属性) -->
-                    <li>
-                      <!-- drag handle -->
-                      <span class="handle">
-                        <i class="fas fa-ellipsis-v"></i>
-                        <i class="fas fa-ellipsis-v"></i>
-                      </span>
-                      <!-- checkbox -->
-                      <div class="icheck-primary d-inline ml-2">
-                        <input type="checkbox" value="" name="todo1">
-                        <label for="todoCheck1"></label>
-                      </div>
-                      <!-- todo text -->
-                      <span class="text">测试输入 | 课程 2020-05-08 14:00 </span>
-                      <!-- Emphasis label -->
-                      <!-- <small class="badge badge-danger"><i class="far fa-clock"></i> 2 mins</small> -->
-                    </li>
-                    <li>
-                      <!-- drag handle -->
-                      <span class="handle">
-                        <i class="fas fa-ellipsis-v"></i>
-                        <i class="fas fa-ellipsis-v"></i>
-                      </span>
-                      <!-- checkbox -->
-                      <div class="icheck-primary d-inline ml-2">
-                        <input type="checkbox" checked=true value="" name="todo1">
-                        <label for="todoCheck1"></label>
-                      </div>
-                      <!-- todo text -->
-                      <span class="text">测试输入 | 课程 | 已签到 2020-05-08 14:00 </span>
-                      <!-- Emphasis label -->
-                      <!-- <small class="badge badge-danger"><i class="far fa-clock"></i> 2 mins</small> -->
-                    </li>
-                  </ul>
+                <div class="card-body p-0">
+                  <table class="table table-striped">
+                    <thead>
+                      <tr>
+                        <th>课程</th>
+                        <th>教室</th>
+                        <th>教师</th>
+                        <th>上课日期</th>
+                        <th>上课时间</th>
+                        <th style="width: 75px">添加</th>
+                      </tr>
+                    </thead>
+                    <form action="add_course" method="post">
+                    {% csrf_token %}
+                    <tbody>
+                      <tr>
+                        <td>
+                          <div class="form-group">
+                            <select class="custom-select">
+                              <option value=""></option>
+                              {% for course in courses %}
+                              <option value="{{course.cid}}">{{course.cname}}[{{course.cid}}]</option>
+                              {% endfor %}
+                            </select>
+                          </div>
+                        </td>
+                        <td>
+                          <div class="form-group">
+                            <select class="custom-select">
+                              <option value=""></option>
+                              {% for classroom in classrooms %}
+                              <option value="{{classroom.rid}}">{{classroom.rloc}}</option>
+                              {% endfor %}
+                            </select>
+                          </div>
+                        </td>
+                        <td>
+                          <div class="form-group">
+                            <select class="custom-select">
+                              <option value=""></option>
+                              {% for teacher in teachers %}
+                              <option value="{{teacher.tid}}">{{teacher.tname}}[{{teacher.tid}}]</option>
+                              {% endfor %}
+                            </select>
+                          </div>
+                        </td>
+                        <td>
+                          <div class="form-group">
+                            <select class="custom-select">
+                              <option value=""></option>
+                              {% for i in times %}
+                              <option value="{{forloop.counter}}">{{i}}</option>
+                              {% endfor %}
+                            </select>
+                          </div>
+                        </td>
+                        <td>
+                          <div class="form-group">
+                            <select class="custom-select">
+                              <option value=""></option>
+                              {% for i in clocks %}
+                              <option value="{{forloop.counter}}">{{i}}</option>
+                              {% endfor %}
+                            </select>
+                          </div>
+                        </td>
+                        <td>
+                          <a href="{% url 'add_course' %}"><input type="submit" value="添加" class="btn btn-block btn-outline-success"/></a>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </form>
+                  </table>
                 </div>
-                <!-- /.card-body -->
+                <!-- /.col -->
               </div>
-              <!-- /.card -->
-            </section>
-            <!-- /.Left col -->
-            <!-- right col (We are only adding the ID to make the widgets sortable)>
-          <section class="col-lg-5 connectedSortable">
-
-          </section>
-          < right col -->
+              <!-- /.row (main row) -->
+            </div><!-- /.container-fluid -->
           </div>
           <!-- /.row (main row) -->
+
+          <div class="row">
+            <div class="col-12">
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title">删除课程安排</h3>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body p-0">
+                  <table class="table table-striped">
+                    <thead>
+                      <tr>
+                        <th>课程</th>
+                        <th>教室</th>
+                        <th>教师</th>
+                        <th>上课日期</th>
+                        <th>上课时间</th>
+                        <th style="width: 75px">删除</th>
+                      </tr>
+                    </thead>
+                    <form action="del_course" method="post">
+                      {% csrf_token %}
+                    <tbody id="infos" name="infos">
+                      {% for coc in courses_on_class %}
+                      <tr>
+                        <td>{{coc.cid__cname}}[{{coc.cid__cid}}]</td>
+                        <td>{{coc.rid__rloc}}</td>
+                        <td>{{coc.cid__tid__tname}}[{{coc.cid__tid__tid}}]</td>
+                        <td>{{coc.cday}}</td>
+                        <td>{{coc.ctime}}</td>
+                        <td><a href="{% url 'del_course' %}"><input type="submit" value="删除" class="btn btn-block btn-outline-danger"/></a></td>
+                      </tr>
+                      {% endfor %}
+                    </tbody>
+                  </form>
+                  </table>
+                </div>
+                <!-- /.col -->
+              </div>
+              <!-- /.row (main row) -->
+            </div><!-- /.container-fluid -->
+          </div>
         </div><!-- /.container-fluid -->
       </section>
       <!-- /.content -->
@@ -381,19 +371,6 @@
   <script src="{%static "dist/js/pages/dashboard.js" %}"></script>
   <!-- AdminLTE for demo purposes -->
   <script src="{%static "dist/js/demo.js" %}"></script>
-  <!-- <script>
-function getCookie()
-{
-  var ca = document.cookie.split(';');
-  for(var i=0; i<ca.length; i++)
-  {
-    var c = ca[i].trim();
-    console.log(c)
-    if (c.indexOf("log_s")==0) return c.substring(5,c.length);
-  }
-  return "";
-}
-</script> -->
 </body>
 
 </html>

@@ -1,6 +1,7 @@
 from background import models
 import datetime
 
+
 def check_cookies(request):
     is_stu = True
     v = request.COOKIES.get('log_s')

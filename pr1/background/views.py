@@ -238,7 +238,6 @@ def teacher(request):
     # print(ttoday_obj.ttoday_html())
     context = {
         'info':info,
-        'auth':info.tauth,
         'ttoday_obj':ttoday_obj,
     }
     return render(request, 'AdminLTE/teacher.html', context)
@@ -324,4 +323,41 @@ def signed_info(request):
 
 
 def super(request):
-    return render(request, 'AdminLTE/super.html')
+    v = request.COOKIES.get('log_t')
+    info = models.Teacher.objects.get(tid=str(v))
+    teachers = models.Teacher.objects.all()
+    classrooms = models.Classroom.objects.all()
+    courses = models.Course.objects.all()
+    courses_on_class = models.CouOnClass.objects.all().values('cid__cid', 'cid__cname', 'rid__rloc', 'cid__tid__tid', 'cid__tid__tname', 'cday', 'ctime')
+    times = ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+    has_times = [
+        ("0", '周一'),
+        ("1", '周二'),
+        ("2", '周三'),
+        ("3", '周四'),
+        ("4", '周五'),
+        ("5", '周六'),
+        ("6", '周日'),
+    ]
+    print(courses_on_class.values('cday'))
+    clocks = ['08:00', '09:50', '14:00', '15:50', '18:30']
+    # print(courses_on_class)
+    context = {
+        'info': info,
+        'teachers': teachers,
+        'classrooms': classrooms,
+        'courses': courses,
+        'times': times,
+        'has_times': has_times,
+        'clocks': clocks,
+        'courses_on_class': courses_on_class,
+    }
+    return render(request, 'AdminLTE/super.html', context)
+
+
+def add_course(request):
+    pass
+
+
+def del_course(request):
+    pass
