@@ -226,7 +226,7 @@ def teacher(request):
 def teacher_course(request):
     v = request.COOKIES.get('log_t')
     info = models.Teacher.objects.get(tid=str(v))
-    course = models.Course.objects.filter(tid=info).values('cid', 'cname')
+    course = models.Course.objects.filter(tid__tid=str(v)).values('cid', 'cname')
     # c_info = []
     rlocs = []
     cids = []
@@ -256,7 +256,7 @@ def signed_info(request):
     signed = []
     courses = models.Course.objects.filter(tid=t_id)
     # print(courses)
-    cnt = 0
+    #cnt = 0
     for course_0 in courses:
         course_id = str(course_0.cid)
         course_name = models.Course.objects.get(cid=course_id).cname
