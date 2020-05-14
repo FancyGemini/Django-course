@@ -17,6 +17,11 @@ from background import utils as u
 # import pyzbar.pyzbar as pyzbar
 # import cv2
 
+def page_not_found(request, exception, template_name='404.html'):
+    return render(request, '404.html')
+
+def page_error(request, template_name='500.html'):
+    return render(request, '500.html')
 
 def home(request):
     return render(request, 'home.html')
@@ -27,7 +32,7 @@ def signin(request):
         v = request.COOKIES.get('log_s')
         if not v:
             v = request.COOKIES.get('log_t')
-            return redirect('/index', log_t=str(v))
+            return redirect('/teacher', log_t=str(v))
         else:
             return redirect('/student', log_s=str(v))
     else:
