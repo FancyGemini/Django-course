@@ -12,7 +12,7 @@ from django.core.serializers import serialize
 import json
 import qrcode
 import arrow
-import datetime
+import datetime, time
 import uuid
 from background import utils as u
 # import pyzbar.pyzbar as pyzbar
@@ -289,7 +289,6 @@ def sign_info(request):
         s['allsign_num'] = unsigned_num
         s['signed_num'] = signed_num
         s['id'] = str(s['id'])
-        print(s['id'])
     
     counts = len(signs)
     page = request.GET.get('page', 1)
@@ -365,16 +364,16 @@ def super(request):
     teachers = models.Teacher.objects.all()
     classrooms = models.Classroom.objects.all()
     courses = models.Course.objects.all()
-    courses_on_class = models.CouOnClass.objects.all().values('cid__cid', 'cid__cname', 'rid__rloc', 'cid__tid__tid', 'cid__tid__tname', 'cday', 'ctime')
+    courses_on_class = models.CouOnClass.objects.all().values('id', 'cid__cid', 'cid__cname', 'rid__rloc', 'cid__tid__tid', 'cid__tid__tname', 'cday', 'ctime').order_by('cid__cid')
     times = ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
     has_times = [
-        ("0", '周一'),
-        ("1", '周二'),
-        ("2", '周三'),
-        ("3", '周四'),
-        ("4", '周五'),
-        ("5", '周六'),
-        ("6", '周日'),
+        ("1", '周一'),
+        ("2", '周二'),
+        ("3", '周三'),
+        ("4", '周四'),
+        ("5", '周五'),
+        ("6", '周六'),
+        ("7", '周日'),
     ]
     print(courses_on_class.values('cday'))
     clocks = ['08:00', '09:50', '14:00', '15:50', '18:30']
@@ -393,8 +392,28 @@ def super(request):
 
 
 def add_course(request):
-    pass
+    request.encoding = 'utf-8'
+    time_dict = {
+        "1" : datetime.time(8, 0, 0),
+        "2" : datetime.time(9, 50, 0),
+        "3" : datetime.time(14, 0, 0),
+        "4" : datetime.time(15, 50, 0),
+        "5" : datetime.time(18, 30, 0)
+    }
+    if request.POST:
+        print(time_dict[request.POST['time']])
+        cid = models.Course.objects.get(cid=request.POST['course'])
+        rid = models.Classroom.objects.get(rid=request.POST['room'])
+        models.CouOnClass.objects.create(ctime=time_dict[request.POST['time']], cid=cid, rid=rid, cday=request.POST['day'])
+        return HttpResponse("YES")
+    return HttpResponse("NO")
 
 
-def del_course(request):
+def edit_course(request, id):
+    cou_on_class = models.CouOnClass.objects.get(id=str(id))
     pass
+
+"""
+def edit_course_detail(request, cid):
+    pass
+"""

@@ -120,7 +120,7 @@
                 <li class="nav-item">
                   <a href={%url 'super' %} class="nav-link active">
                     <i class="far fa-circle nav-icon"></i>
-                    <p>教师管理</p>
+                    <p>课程管理</p>
                   </a>
                 </li>
               </ul>
@@ -170,12 +170,12 @@
         <div class="container-fluid">
           <div class="row mb-2">
             <div class="col-sm-6">
-              <h1 class="m-0 text-dark">教师管理</h1>
+              <h1 class="m-0 text-dark">课程管理</h1>
             </div><!-- /.col -->
             <div class="col-sm-6">
               <ol class="breadcrumb float-sm-right">
                 <li class="breadcrumb-item">主页</li>
-                <li class="breadcrumb-item active"><a href="#">教师管理</a></li>
+                <li class="breadcrumb-item active"><a href="#">课程管理</a></li>
               </ol>
             </div><!-- /.col -->
           </div><!-- /.row -->
@@ -207,13 +207,13 @@
                         <th style="width: 75px">添加</th>
                       </tr>
                     </thead>
-                    <form action="add_course" method="post">
+                    <form action={%url 'add_course' %} method="post">
                     {% csrf_token %}
                     <tbody>
                       <tr>
                         <td>
                           <div class="form-group">
-                            <select class="custom-select">
+                            <select class="custom-select" name="course">
                               <option value=""></option>
                               {% for course in courses %}
                               <option value="{{course.cid}}">{{course.cname}}[{{course.cid}}]</option>
@@ -223,7 +223,7 @@
                         </td>
                         <td>
                           <div class="form-group">
-                            <select class="custom-select">
+                            <select class="custom-select" name="room">
                               <option value=""></option>
                               {% for classroom in classrooms %}
                               <option value="{{classroom.rid}}">{{classroom.rloc}}</option>
@@ -233,7 +233,7 @@
                         </td>
                         <td>
                           <div class="form-group">
-                            <select class="custom-select">
+                            <select class="custom-select" name="teacher">
                               <option value=""></option>
                               {% for teacher in teachers %}
                               <option value="{{teacher.tid}}">{{teacher.tname}}[{{teacher.tid}}]</option>
@@ -243,7 +243,7 @@
                         </td>
                         <td>
                           <div class="form-group">
-                            <select class="custom-select">
+                            <select class="custom-select" name="day">
                               <option value=""></option>
                               {% for i in times %}
                               <option value="{{forloop.counter}}">{{i}}</option>
@@ -253,7 +253,7 @@
                         </td>
                         <td>
                           <div class="form-group">
-                            <select class="custom-select">
+                            <select class="custom-select" name="time">
                               <option value=""></option>
                               {% for i in clocks %}
                               <option value="{{forloop.counter}}">{{i}}</option>
@@ -280,7 +280,7 @@
             <div class="col-12">
               <div class="card">
                 <div class="card-header">
-                  <h3 class="card-title">删除课程安排</h3>
+                  <h3 class="card-title">编辑课程安排</h3>
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body p-0">
@@ -292,7 +292,7 @@
                         <th>教师</th>
                         <th>上课日期</th>
                         <th>上课时间</th>
-                        <th style="width: 75px">删除</th>
+                        <th style="width: 75px">编辑</th>
                       </tr>
                     </thead>
                     <form action="del_course" method="post">
@@ -305,7 +305,7 @@
                         <td>{{coc.cid__tid__tname}}[{{coc.cid__tid__tid}}]</td>
                         <td>{{coc.cday}}</td>
                         <td>{{coc.ctime}}</td>
-                        <td><a href="{% url 'del_course' %}"><input type="submit" value="删除" class="btn btn-block btn-outline-danger"/></a></td>
+                        <td><a href="{% url 'edit_course' coc.id  %}"><input type="submit" value="编辑" class="btn btn-block btn-outline-primary"/></a></td>
                       </tr>
                       {% endfor %}
                     </tbody>
