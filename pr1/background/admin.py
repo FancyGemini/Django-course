@@ -1,5 +1,5 @@
 from django.contrib import admin
-from background.models import Student, Teacher, Course, Classroom, StuToCourse, CouOnClass, SignInfo
+from background.models import Student, Teacher, Course, Classroom, StuToCourse, CouOnClass,CouSignInfo, SignInfo
 
 # Register your models here.
 
@@ -23,4 +23,4 @@ class SignInfoAdmin(admin.ModelAdmin):
     list_display = ('sid', 'cid', 'signtime')
     
 # 注册其他模型
-admin.site.register([Teacher, Course, Classroom])
+admin.site.register([Teacher, Course, Classroom, CouSignInfo])

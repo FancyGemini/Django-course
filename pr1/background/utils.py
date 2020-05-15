@@ -1,5 +1,7 @@
 from background import models
+from pytz import timezone
 import datetime
+import uuid
 
 
 def check_cookies(request):
@@ -82,21 +84,22 @@ def student_sign(stuid, couid, cousignid, debug=False):
 
         # 测试用
         if debug:
-            models.SignInfo.objects.create(sid=stu.sid, cid=stu.cid)
+            models.SignInfo.objects.create(sid=stu.sid, cid=cousignid.id)
             return signInfo
 
-        if models.SignInfo.objects.filter(cid=cousignid).exists():
+        if models.SignInfo.objects.filter(cid=cousignid.id).exists():
             signInfo['isSigned'] = True
             return signInfo
 
         # 获取课程详细信息
-        time = datetime.datetime.now()
-        if time >= cousignid.timestart and time <= cousignid.timeend :
-            # 写入签到信息
-            models.SignInfo.objects.create(sid=stu.sid, cid=stu.cid)
+        cst_tz = timezone('Asia/Shanghai')
+        time = datetime.datetime.now().replace(tzinfo=cst_tz)
+        # 写入签到信息
+        if ((time > cousignid.timestart) and (time < cousignid.timeend)):
+            models.SignInfo.objects.create(sid=stu.sid, cid=cousignid)
             signInfo['isOutTime'] = False
-    except Exception:
-        pass
+    except Exception as e:
+        print(e)
 
     return signInfo
 
