@@ -289,7 +289,6 @@ def sign_info(request):
         s['allsign_num'] = unsigned_num
         s['signed_num'] = signed_num
         s['id'] = str(s['id'])
-        print(s['id'])
     
     counts = len(signs)
     page = request.GET.get('page', 1)
