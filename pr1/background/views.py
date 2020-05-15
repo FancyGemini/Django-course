@@ -280,15 +280,16 @@ def sign_info(request):
     v = request.COOKIES.get('log_t')
     tinfo = models.Teacher.objects.get(tid=str(v))
     signs = models.CouSignInfo.objects.filter(cid__tid__tid=str(v)).order_by('-timestart').values('cid__cid', 'cid__cname', 'id')
-    signed_rate = []
     for s in signs:
-        signed_num = len(models.SignInfo.objects.filter(cid__cid=s['cid__cid']))
+        signed_num = len(models.SignInfo.objects.filter(cid__cid__cid=s['cid__cid'], cid__id=s['id']))
         unsigned_num = len(models.StuToCourse.objects.filter(cid__cid=s['cid__cid']))
         if unsigned_num <= 0:
-            unsigned_num = 1
+            unsigned_num = 0
             signed_num = 0
-        signed_rate.append(signed_num / unsigned_num)
-    print(signed_rate)
+        s['allsign_num'] = unsigned_num
+        s['signed_num'] = signed_num
+        s['id'] = str(s['id'])
+        print(s['id'])
     
     counts = len(signs)
     page = request.GET.get('page', 1)
@@ -305,11 +306,12 @@ def sign_info(request):
     return render(request, 'AdminLTE/signed_info.html', context)
 
 # 签到详情
-def signed_info_detail(request):
+def signed_info_detail(request, cousignid):
     v = request.COOKIES.get('log_t')
     t_id = models.Teacher.objects.get(tid=str(v))
     signed = []
-    courses = models.Course.objects.filter(tid=t_id)
+    cid = models.CouSignInfo.objects.get(id=uuid.UUID(cousignid))
+    courses = models.Course.objects.filter(tid=t_id, cid=cid.cid.cid)
     # print(courses)
     #cnt = 0
     for course_0 in courses:

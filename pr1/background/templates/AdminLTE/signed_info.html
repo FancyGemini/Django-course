@@ -229,24 +229,23 @@
                       <thead>
                         <tr>
                           <th>课程名称</th>
-                          <th>签到情况</th>
+                          <th>签到人数</th>
                           <th>详情</th>
                         </tr>
                       </thead>
                       <tbody>
+                      {% for sig in signed %}
                         <tr>
-                          <td>测试</td>
-                          <td>
-                          <div class="progress progress-xs progress-striped active">
-                            <div class="progress-bar bg-success" style="width: 50%"></div>
-                          </div></td>
-                          <td><button></button></td>
+                          <td>{{ sig.cid__cname }}</td>
+                          <td style="width: 6em">{{ sig.signed_num }} / {{ sig.allsign_num }}</td>
+                          <td style="width: 8em"><a href={%url 'signed_info_detail' sig.id %}><button type="button" class="btn btn-block btn-success">查看详情</button></a></td>
                         </tr>
+                      {% endfor %}
                       </tbody>
                       <tfoot>
                         <tr>
                           <th>课程名称</th>
-                          <th>签到情况</th>
+                          <th>签到人数</th>
                           <th>详情</th>
                         </tr>
                       </tfoot>
