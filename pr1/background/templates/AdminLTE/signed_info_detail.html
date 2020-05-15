@@ -228,26 +228,28 @@
                     <table id="example1" class="table table-bordered table-striped dataTable dtr-inline" role="grid" aria-describedby="example1_info">
                       <thead>
                         <tr>
+                          <th>学生姓名</th>
+                          <th>学号</th>
                           <th>课程名称</th>
-                          <th>签到情况</th>
-                          <th>详情</th>
+                          <th>签到时间</th>
                         </tr>
                       </thead>
                       <tbody>
+                        {% for sig in signed %}
                         <tr>
-                          <td>测试</td>
-                          <td>
-                          <div class="progress progress-xs progress-striped active">
-                            <div class="progress-bar bg-success" style="width: 50%"></div>
-                          </div></td>
-                          <td><button></button></td>
+                          <td>{{ sig.3 }}</td>
+                          <td>{{ sig.2 }}</td>
+                          <td>{{ sig.0 }}</td>
+                          <td>{{ sig.1 }}</td>
                         </tr>
+                        {% endfor %}
                       </tbody>
                       <tfoot>
                         <tr>
+                          <th>学生姓名</th>
+                          <th>学号</th>
                           <th>课程名称</th>
-                          <th>签到情况</th>
-                          <th>详情</th>
+                          <th>签到时间</th>
                         </tr>
                       </tfoot>
                     </table>

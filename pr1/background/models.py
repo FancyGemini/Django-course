@@ -145,7 +145,7 @@ class CouSignInfo(models.Model):
         verbose_name_plural = '课程签到'
 
     def __str__(self):
-        return self.id
+        return str(self.id)
 
 
 # --------------------------

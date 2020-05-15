@@ -13,6 +13,7 @@ import json
 import qrcode
 import arrow
 import datetime
+import uuid
 from background import utils as u
 # import pyzbar.pyzbar as pyzbar
 # import cv2
@@ -137,6 +138,8 @@ def create_sign(request, cid):
         context['endtime'] = utc.datetime
         context['cousign'] = u.set_sign(cid, context['starttime'], context['endtime'])
         context['host'] = request.get_host()
+        print(context['starttime'])
+        print(context['endtime'])
     return render(request, 'publish_test.html', context)
 
 
@@ -147,13 +150,16 @@ def sign_page(request, cousign):
     context = {}
     try:
         stu = models.Student.objects.get(sid = sid)
-        cousignid = models.CouSignInfo.objects.get(id = cou)
-        context = u.student_sign(str(sid), cousignid.cid.cid, cou)
+        cousignid = models.CouSignInfo.objects.get(id = uuid.UUID(cousign))
+        context = u.student_sign(str(sid), cousignid.cid.cid, cousignid)
+        print(str(cousignid.id))
+        print(context)
         request.session['signinfo'] = context
         request.session['signflag'] = True
-        print(request.session['signflag'])
+        #print(request.session['signflag'])
         return redirect('/student')
-    except Exception:
+    except Exception as e:
+        print(e)
         context['cousign'] = cou
         request.session['signinfo'] = context
         re = redirect('/')
@@ -269,8 +275,37 @@ def teacher_course(request):
     }
     return render(request, 'AdminLTE/teacher_course.html', context)
 
+# 签到发布记录
+def sign_info(request):
+    v = request.COOKIES.get('log_t')
+    tinfo = models.Teacher.objects.get(tid=str(v))
+    signs = models.CouSignInfo.objects.filter(cid__tid__tid=str(v)).order_by('-timestart').values('cid__cid', 'cid__cname', 'id')
+    signed_rate = []
+    for s in signs:
+        signed_num = len(models.SignInfo.objects.filter(cid__cid=s['cid__cid']))
+        unsigned_num = len(models.StuToCourse.objects.filter(cid__cid=s['cid__cid']))
+        if unsigned_num <= 0:
+            unsigned_num = 1
+            signed_num = 0
+        signed_rate.append(signed_num / unsigned_num)
+    print(signed_rate)
+    
+    counts = len(signs)
+    page = request.GET.get('page', 1)
+    search = request.GET.get('search', '')
+    page_obj = u.Pagination(current_page=page, all_count=counts, per_page_num=8, search_str=search)
+    context = {
+        'info' : tinfo,
+        'signed' : signs[page_obj.start:page_obj.end],
+        'page_obj' : page_obj,
+        'current_page' : page,
+        'search' : search,
+        'counts' : counts
+    }
+    return render(request, 'AdminLTE/signed_info.html', context)
 
-def signed_info(request):
+# 签到详情
+def signed_info_detail(request):
     v = request.COOKIES.get('log_t')
     t_id = models.Teacher.objects.get(tid=str(v))
     signed = []
@@ -319,7 +354,7 @@ def signed_info(request):
     }
     context["signed"] = context["signed"][page_obj.start:page_obj.end]
     # print(context["signed"])
-    return render(request, 'AdminLTE/signed_info.html', context)
+    return render(request, 'AdminLTE/signed_info_detail.html', context)
 
 
 def super(request):
