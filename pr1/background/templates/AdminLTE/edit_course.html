@@ -192,60 +192,39 @@
             <div class="col-12">
               <div class="card">
                 <div class="card-header">
-                  <h3 class="card-title">添加课程安排</h3>
+                  <h3 class="card-title">编辑课程安排 | {{ cou.cid.cname }}</h3>
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body p-0">
                   <table class="table table-striped">
                     <thead>
                       <tr>
-                        <th>课程</th>
                         <th>教室</th>
-                        <th>教师</th>
                         <th>上课日期</th>
                         <th>上课时间</th>
                         <th style="width: 75px">确定</th>
                       </tr>
                     </thead>
-                    <form action={%url 'edit_course' %} method="post">
+                    <form action={%url 'edit_detail' %} method="post" onsubmit="return checkSelect()">
                     {% csrf_token %}
+                    <input type="hidden" value="{{ cou.id }}" name="id">
                     <tbody>
                       <tr>
                         <td>
                           <div class="form-group">
-                            <select class="custom-select" name="course">
+                            <select class="custom-select" name="room" id="room">
                               <option value=""></option>
-                              {% for course in courses %}
-                              <option value="{{course.cid}}">{{course.cname}}[{{course.cid}}]</option>
+                              {% for room in all_room %}
+                              <option value="{{room.rid}}">{{room.rloc}}</option>
                               {% endfor %}
                             </select>
                           </div>
                         </td>
                         <td>
                           <div class="form-group">
-                            <select class="custom-select" name="room">
+                            <select class="custom-select" name="day" id="day">
                               <option value=""></option>
-                              {% for classroom in classrooms %}
-                              <option value="{{classroom.rid}}">{{classroom.rloc}}</option>
-                              {% endfor %}
-                            </select>
-                          </div>
-                        </td>
-                        <td>
-                          <div class="form-group">
-                            <select class="custom-select" name="teacher">
-                              <option value=""></option>
-                              {% for teacher in teachers %}
-                              <option value="{{teacher.tid}}">{{teacher.tname}}[{{teacher.tid}}]</option>
-                              {% endfor %}
-                            </select>
-                          </div>
-                        </td>
-                        <td>
-                          <div class="form-group">
-                            <select class="custom-select" name="day">
-                              <option value=""></option>
-                              {% for i in times %}
+                              {% for i in day %}
                               <option value="{{forloop.counter}}">{{i}}</option>
                               {% endfor %}
                             </select>
@@ -253,7 +232,7 @@
                         </td>
                         <td>
                           <div class="form-group">
-                            <select class="custom-select" name="time">
+                            <select class="custom-select" name="time" id="time">
                               <option value=""></option>
                               {% for i in clocks %}
                               <option value="{{forloop.counter}}">{{i}}</option>
@@ -262,7 +241,7 @@
                           </div>
                         </td>
                         <td>
-                          <a href="{% url 'add_course' %}"><input type="submit" value="添加" class="btn btn-block btn-outline-success"/></a>
+                          <a href="{% url 'add_course' %}"><input type="submit" value="确定" class="btn btn-block btn-outline-success"/></a>
                         </td>
                       </tr>
                     </tbody>
@@ -302,6 +281,15 @@
   <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
   <script>
     $.widget.bridge('uibutton', $.ui.button)
+
+    function checkSelect()
+    {
+      if($("#room").val()=="" || $("#teacher").val()=="" || $("#day").val()=="" || $("#time").val()=="")
+      {
+        alert("请选择有效选项！");
+        return false;
+      }
+    }
   </script>
   <!-- Bootstrap 4 -->
   <script src="{%static "plugins/bootstrap/js/bootstrap.bundle.min.js" %}"></script>

@@ -375,7 +375,6 @@ def super(request):
         ("6", '周六'),
         ("7", '周日'),
     ]
-    print(courses_on_class.values('cday'))
     clocks = ['08:00', '09:50', '14:00', '15:50', '18:30']
     # print(courses_on_class)
     context = {
@@ -411,9 +410,32 @@ def add_course(request):
 
 def edit_course(request, id):
     cou_on_class = models.CouOnClass.objects.get(id=str(id))
-    pass
+    all_room = models.Classroom.objects.all()
+    all_teacher = models.Teacher.objects.all()
+    day = ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+    clock = ['08:00', '09:50', '14:00', '15:50', '18:30']
+    context = {
+        'cou' : cou_on_class,
+        'all_room' : all_room,
+        'all_teacher' : all_teacher,
+        'day' : day,
+        'clocks' : clock
+    }
+    return render(request, 'AdminLTE/edit_course.html', context)
 
-"""
-def edit_course_detail(request, cid):
-    pass
-"""
+def edit_course_detail(request):
+    time_dict = {
+        "1" : datetime.time(8, 0, 0),
+        "2" : datetime.time(9, 50, 0),
+        "3" : datetime.time(14, 0, 0),
+        "4" : datetime.time(15, 50, 0),
+        "5" : datetime.time(18, 30, 0)
+    }
+    if request.POST:
+        cou_on_class = models.CouOnClass.objects.get(id=request.POST['id'])
+        cou_on_class.rid = models.Classroom.objects.get(rid=request.POST['room'])
+        cou_on_class.ctime = time_dict[request.POST['time']]
+        cou_on_class.cday = request.POST['day']
+        cou_on_class.save()
+        return HttpResponse("YES")
+    return HttpResponse("NO")

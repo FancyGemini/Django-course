@@ -34,6 +34,7 @@ urlpatterns = [
     path('super/', bg.super, name='super'),
     path('super/add_course/', bg.add_course, name='add_course'),
     re_path(r'super/edit_course/(\d+)/', bg.edit_course, name='edit_course'),
+    path('super/edit_course_detail/', bg.edit_course_detail, name='edit_detail'),
     path('waiting/', bg.waiting, name='waiting'),
     path('classtest/', bg.class_test, name='class'),
     path('publish_sign/', bg.publish_sign, name='publish_sign'),

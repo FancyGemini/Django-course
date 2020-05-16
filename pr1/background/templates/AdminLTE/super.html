@@ -295,8 +295,6 @@
                         <th style="width: 75px">编辑</th>
                       </tr>
                     </thead>
-                    <form action="del_course" method="post">
-                      {% csrf_token %}
                     <tbody id="infos" name="infos">
                       {% for coc in courses_on_class %}
                       <tr>
@@ -309,7 +307,6 @@
                       </tr>
                       {% endfor %}
                     </tbody>
-                  </form>
                   </table>
                 </div>
                 <!-- /.col -->

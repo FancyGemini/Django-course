@@ -1,5 +1,6 @@
 from background import models
 from pytz import timezone
+from django.db.models import Func
 import datetime
 import uuid
 
@@ -284,3 +285,11 @@ class TodayCourse(object):
             ttoday_course_html.append(html_str)
             ttoday_course_html.append('<label for="todoCheck1"></label><span class="text">%s[%s] %s 地点: %s</span></li>' % (self.cname[i], str(self.cid[i]), on_clock_output, self.rloc[i], ))
         return ''.join(ttoday_course_html)
+
+# 半匹配字符串搜索
+class Position(Func):
+    function = 'Position'
+    arg_joiner = 'IN'
+
+    def __init__(self, expression, substring):
+        super(Position, self).__init__(substring, expression)
