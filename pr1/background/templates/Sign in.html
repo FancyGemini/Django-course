@@ -13,10 +13,10 @@
   <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
   <!--font-family-->
-  <link href="Signin_files/css" rel="stylesheet">
+  <link href="{%static "Signin_files/css" %}" rel="stylesheet">
 
   <!-- title of site -->
-  <title>Sign in</title>
+  <title>签到系统登录</title>
 
   <!-- For favicon png -->
   <!--link rel="shortcut icon" type="image/icon" href="https://www.17sucai.com/preview/1750631/2019-06-21/3856/assets/log-form/2/assets/logo/favicon.png"-->
@@ -60,20 +60,25 @@
       <div class="container">
 
         <div class="sign-content">
-          <h2>sign in</h2>
+          <h2>登录界面</h2>
 
           <div class="row">
             <div class="col-sm-12">
               <div class="signin-form">
-                <form action="https://www.17sucai.com/preview/1750631/2019-06-21/3856/assets/log-form/2/signin.html">
+                <form action="/waiting/" method="post">
+                  {% csrf_token %}
                   <div class="form-group">
-                    <label for="signin_form">Email</label>
-                    <input type="email" class="form-control" id="signin_form" placeholder="Email">
+                    <label for="signin_form">学号/教师工号</label>
+                    <input type="text" class="form-control" name="log_id" id="signin_form" placeholder="输入你的学号/教师工号">
                   </div>
                   <!--/.form-group -->
                   <div class="form-group">
-                    <label for="signin_form">passward</label>
-                    <input type="password" class="form-control" id="signin_form" placeholder="Enter your password">
+                    <label for="signin_form">密码</label>
+                    <input type="password" class="form-control" name="log_pwd" id="signin_form" placeholder="输入你的密码">
+                  </div>
+                  <!--/.form-group -->
+                  <div class="form-group">
+                    <input type="submit" class="btn signin_btn signin_btn_two" data-toggle="modal" data-target=".signin_modal"/>
                   </div>
                   <!--/.form-group -->
                 </form>
@@ -85,127 +90,10 @@
           </div>
           <!--/.row -->
 
-          <div class="row">
-            <div class="col-sm-12">
-              <div class="signin-password">
-                <div class="password-circle">
-                  <div class="single-password-circle">
-                    <input type="radio" id="radio01" name="radio">
-                    <label for="radio01">
-                      <span class="round-boarder">
-                        <span class="round-boarder1"></span>
-                      </span>remember password
-                    </label>
-                  </div>
-                  <!--/.single-password-circle-->
-                  <div class="single-forgot-password-circle text-right
-									">
-                    <a href="https://www.17sucai.com/preview/1750631/2019-06-21/3856/assets/log-form/2/signin.html">Forgot email or password</a>
-                  </div>
-                  <!--/.single-password-circle-->
-                </div>
-                <!--/.password-circle-->
-              </div>
-              <!--/.signin-password -->
-            </div>
-            <!--/.col -->
-          </div>
-          <!--/.row -->
-
-          <div class="row">
-            <div class="col-sm-12">
-              <div class="signin-footer">
-                <button type="button" class="btn signin_btn signin_btn_two" data-toggle="modal" data-target=".signin_modal">
-                  sign in
-                </button>
-                <p>
-                  Don’t have an Account ?
-                  <a href="https://www.17sucai.com/preview/1750631/2019-06-21/3856/assets/log-form/2/signup.html">register</a>
-                </p>
-              </div>
-              <!--/.signin-footer -->
-            </div>
-            <!--/.col -->
-          </div>
-          <!--/.row -->
 
         </div>
         <!--/.sign-content -->
 
-        <!-- modal part start -->
-        <div class="modal fade signin_modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
-          <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-              <div class="sign-content">
-
-                <div class="modal-header">
-                  <h2>sign in</h2>
-                </div>
-                <!--/.modal-header -->
-
-                <div class="modal-body">
-                  <div class="signin-form">
-                    <form action="https://www.17sucai.com/preview/1750631/2019-06-21/3856/assets/log-form/2/signin.html">
-                      <div class="form-group">
-                        <label for="signin_form">Email</label>
-                        <input type="email" class="form-control" id="signin_form" placeholder="Email">
-                      </div>
-                      <!--/.form-group -->
-                      <div class="form-group">
-                        <label for="signin_form">passward</label>
-                        <input type="password" class="form-control" id="signin_form" placeholder="Enter your password">
-                      </div>
-                      <!--/.form-group -->
-                    </form>
-                    <!--/form -->
-                  </div>
-                  <!--/.signin-form -->
-
-                  <div class="signin-modal-password">
-                    <div class="password-modal-circle">
-                      <div class="single-password-modal-circle">
-                        <input type="radio" id="radio-modal" name="radio-modal">
-                        <label for="radio-modal">
-                          <span class="round-boarder-modal">
-                            <span class="round-boarder-modal-one">
-
-                            </span>
-                          </span>remember password
-                        </label>
-                      </div>
-                      <!--/.single-password-modal-circle-->
-                      <div class="single-forgot-password-modal-circle text-right
-											">
-                        <a href="https://www.17sucai.com/preview/1750631/2019-06-21/3856/assets/log-form/2/signin.html">Forgot email or password</a>
-                      </div>
-                      <!--/.single-password-modal-circle-->
-                    </div>
-                    <!--/.password-modal-circle-->
-                  </div>
-                  <!--/.signin-modal-password -->
-
-                  <div class="signin-footer">
-                    <button type="button" class="btn signin_btn signin_btn_two" data-toggle="modal" data-target=".signin_modal">
-                      sign in
-                    </button>
-                    <p>
-                      Don’t have an Account ?
-                      <a href="https://www.17sucai.com/preview/1750631/2019-06-21/3856/assets/log-form/2/signup.html">register</a>
-                    </p>
-                  </div>
-                  <!--/.signin-footer -->
-                </div>
-                <!--/.modal-body -->
-
-              </div>
-              <!--/.sign-content -->
-            </div>
-            <!--/.modal-content -->
-          </div>
-          <!--/.modal-dialog -->
-        </div>
-        <!--/.modal -->
-        <!-- modal part end -->
       </div>
       <!--/.container -->
 
@@ -241,12 +129,19 @@
 
     <!-- jquery.sticky.js -->
     <script src="{%static "Signin_files/jquery.sticky.js" %}"></script>
-    <script src="{%static "Sign in_files/jquery.easing.min.js" %}"></script>
+    <script src="{%static "Signin_files/jquery.easing.min.js" %}"></script>
 
 
     <!--Custom JS-->
     <script src="{%static "Signin_files/custom.js" %}"></script>
 
+    {% if messages %}
+    <script>
+        {% for msg in messages %}
+            alert('{{ msg.message }}');
+        {% endfor %}
+    </script>
+    {% endif %}
 
 
   </div>

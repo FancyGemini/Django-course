@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>class test</title>
+    </head>
+    <body>
+        <ul>
+            {% for cou in all_class %}
+            <li>{{cou.cname}} {{cou.tid__tname}} <a href="http://127.0.0.1:8000/class_form/{{cou.cid}}">发布签到</a></li>
+            {% endfor %}
+        </ul>
+    </body>
+</html>
