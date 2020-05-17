@@ -243,17 +243,18 @@ def teacher(request):
     for cou in courses:
         time_loc = models.CouOnClass.objects.filter(cid__cid=cou['cid']).values('ctime', 'rid__rloc', 'cday')
         for t_l in time_loc:
-            class_time = t_l['ctime']
-            print(class_time)
-            print(type(class_time))
-            class_day = (int(t_l['cday'])+1) % 7
+            class_day = (int(t_l['cday']))
             now_time = datetime.datetime.now()
             # print(str(class_day) + ' / ' + now_time.strftime("%w"))
-            if str(class_day) == now_time.strftime("%w"):
+            today = now_time.strftime("%w")
+            if today == '0':
+                today = '7'
+            if str(class_day) == today:
                 cid.append(cou['cid'])
                 cname.append(cou['cname'])
                 ctime.append(t_l['ctime'])
                 rloc.append(t_l['rid__rloc'])
+        print(str(class_day)+today)
     ttoday_obj = u.TodayCourse(cid=cid, cname=cname, ctime=ctime, rloc=rloc)
     # print(ttoday_obj.ttoday_html())
     context = {
@@ -418,8 +419,8 @@ def add_course(request):
         cid = models.Course.objects.get(cid=request.POST['course'])
         rid = models.Classroom.objects.get(rid=request.POST['room'])
         models.CouOnClass.objects.create(ctime=time_dict[request.POST['time']], cid=cid, rid=rid, cday=request.POST['day'])
-        return HttpResponse("YES")
-    return HttpResponse("NO")
+        return HttpResponse("<script>alert(\"添加成功！\");window.location.href=\"..\";</script>")
+    return HttpResponse("<script>alert(\"添加失败！\");window.location.href=\"..\";</script>")
 
 
 def edit_course(request, id):
@@ -451,5 +452,13 @@ def edit_course_detail(request):
         cou_on_class.ctime = time_dict[request.POST['time']]
         cou_on_class.cday = request.POST['day']
         cou_on_class.save()
-        return HttpResponse("YES")
-    return HttpResponse("NO")
+        return HttpResponse("<script>alert(\"编辑成功！\");window.location.href=\"..\";</script>")
+    return HttpResponse("<script>alert(\"编辑失败！\");window.location.href=\"..\";</script>")
+
+# 删除上课信息
+def del_couonclass(request, id):
+    try:
+        models.CouOnClass.objects.get(id=id).delete()
+        return HttpResponse("<script>alert(\"删除成功！\");window.location.href=\"../..\";</script>")
+    except Exception:
+        return HttpResponse("<script>alert(\"删除失败！\");window.location.href=\"../..\";</script>")

@@ -203,6 +203,7 @@
                         <th>上课日期</th>
                         <th>上课时间</th>
                         <th style="width: 75px">确定</th>
+                        <th style="width: 75px">删除</th>
                       </tr>
                     </thead>
                     <form action={%url 'edit_detail' %} method="post" onsubmit="return checkSelect()">
@@ -241,7 +242,10 @@
                           </div>
                         </td>
                         <td>
-                          <a href="{% url 'add_course' %}"><input type="submit" value="确定" class="btn btn-block btn-outline-success"/></a>
+                          <a href="{% url 'edit_detail' %}"><input type="submit" value="确定" class="btn btn-block btn-outline-success"/></a>
+                        </td>
+                        <td>
+                          <a href="{% url 'del_cou_class' cou.id %}"><input type="button" value="删除" class="btn btn-block btn-outline-danger"/></a>
                         </td>
                       </tr>
                     </tbody>

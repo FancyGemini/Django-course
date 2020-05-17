@@ -201,7 +201,6 @@
                       <tr>
                         <th>课程</th>
                         <th>教室</th>
-                        <th>教师</th>
                         <th>上课日期</th>
                         <th>上课时间</th>
                         <th style="width: 75px">添加</th>
@@ -227,16 +226,6 @@
                               <option value=""></option>
                               {% for classroom in classrooms %}
                               <option value="{{classroom.rid}}">{{classroom.rloc}}</option>
-                              {% endfor %}
-                            </select>
-                          </div>
-                        </td>
-                        <td>
-                          <div class="form-group">
-                            <select class="custom-select" name="teacher">
-                              <option value=""></option>
-                              {% for teacher in teachers %}
-                              <option value="{{teacher.tid}}">{{teacher.tname}}[{{teacher.tid}}]</option>
                               {% endfor %}
                             </select>
                           </div>
