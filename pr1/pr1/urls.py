@@ -43,7 +43,7 @@ urlpatterns = [
     re_path(r'publish_sign/publish_form/(\d+)/', bg.publish_form, name='publish_form'),
     re_path(r'publish_sign/publish_form/publish/(\d+)/', bg.create_sign, name='publish'),
     re_path(r'qiandao/(\d+)', bg.qianndao_test),
-    re_path(r'qrcode/(\w{8}-\w{4}-\w{4}-\w{4}-\w{12})', bg.get_qrcode),
+    re_path(r'qrcode/(\w{8}-\w{4}-\w{4}-\w{4}-\w{12}).png', bg.get_qrcode, name='get_qrcode'),
     re_path(r'student/sign/(\w{8}-\w{4}-\w{4}-\w{4}-\w{12})', bg.sign_page),
 ]
 

@@ -220,6 +220,7 @@
                         <tr>
                           <th>课程名称</th>
                           <th>签到人数</th>
+                          <th>二维码</th>
                           <th>详情</th>
                         </tr>
                       </thead>
@@ -228,6 +229,11 @@
                         <tr>
                           <td>{{ sig.cid__cname }}</td>
                           <td style="width: 6em">{{ sig.signed_num }} / {{ sig.allsign_num }}</td>
+                          <td style="width: 75px; font-size:45px; text-align:center">
+                            <a href="http://{{ host }}/qrcode/{{sig.id}}.png" data-toggle="lightbox" data-title="签到二维码">
+                              <img class="img-fluid mb-2" src="http://{{ host }}/qrcode/{{sig.id}}.png" >
+                            </a>
+                          </td>
                           <td style="width: 8em"><a href={%url 'signed_info_detail' sig.id %}><button type="button" class="btn btn-block btn-success">查看详情</button></a></td>
                         </tr>
                       {% endfor %}
@@ -236,6 +242,7 @@
                         <tr>
                           <th>课程名称</th>
                           <th>签到人数</th>
+                          <th>二维码</th>
                           <th>详情</th>
                         </tr>
                       </tfoot>
@@ -286,6 +293,15 @@
   <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
   <script>
     $.widget.bridge('uibutton', $.ui.button)
+    
+    $(function () {
+      $(document).on('click', '[data-toggle="lightbox"]', function(event) {
+        event.preventDefault();
+        $(this).ekkoLightbox({
+          alwaysShowClose: true,
+        });
+      });
+    })
   </script>
   <!-- Bootstrap 4 -->
   <script src="{%static "plugins/bootstrap/js/bootstrap.bundle.min.js" %}"></script>
@@ -307,6 +323,8 @@
   <script src="{%static "plugins/summernote/summernote-bs4.min.js" %}"></script>
   <!-- overlayScrollbars -->
   <script src="{%static "plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js" %}"></script>
+  <!-- Ekko Lightbox -->
+  <script src="{%static "plugins/ekko-lightbox/ekko-lightbox.min.js" %}"></script>
   <!-- AdminLTE App -->
   <script src="{%static "dist/js/adminlte.js" %}"></script>
   <!-- AdminLTE dashboard demo (This is only for demo purposes) -->

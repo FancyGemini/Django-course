@@ -140,7 +140,7 @@ def create_sign(request, cid):
         context['host'] = request.get_host()
         print(context['starttime'])
         print(context['endtime'])
-    return render(request, 'publish_test.html', context)
+    return render(request, 'publish_alert.html', context)
 
 
 # 学生签到界面
@@ -317,6 +317,7 @@ def sign_info(request):
         'search' : search,
         'counts' : counts
     }
+    context['host'] = request.get_host()
     return render(request, 'AdminLTE/signed_info.html', context)
 
 # 签到详情
