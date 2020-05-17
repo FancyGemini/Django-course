@@ -348,7 +348,6 @@ def signed_info_detail(request, cousignid):
     # print(signed[0])
     page = request.GET.get('page', 1)
     search = request.GET.get('search', '')
-    print(search)
     signed_filt = []
     if len(search.strip()) != 0:
         for si in signed:
@@ -367,11 +366,26 @@ def signed_info_detail(request, cousignid):
         'page_obj' : page_obj,
         'current_page' : page,
         'search' : search,
+        'uuid' : cousignid
     }
     context["signed"] = context["signed"][page_obj.start:page_obj.end]
     # print(context["signed"])
     return render(request, 'AdminLTE/signed_info_detail.html', context)
 
+# 未签到详情
+def unsigned_detail(request, cousignid):
+    v = request.COOKIES.get('log_t')
+    t_id = models.Teacher.objects.get(tid=str(v))
+    sign_info = models.SignInfo.objects.filter(cid__id=uuid.UUID(cousignid)).values('sid__sid')
+    unsign_stu = models.Student.objects.exclude(sid__in=sign_info).values('sid', 'sname')
+    
+    context = {
+        'info' : t_id,
+        'uuid' : cousignid,
+        'stu' : unsign_stu
+    }
+        
+    return render(request, 'AdminLTE/unsigned_info_detail.html', context)
 
 def super(request):
     v = request.COOKIES.get('log_t')

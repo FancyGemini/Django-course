@@ -30,6 +30,7 @@ urlpatterns = [
     path('teacher_course/', bg.teacher_course, name='teacher_course'),
     path('sign_info/', bg.sign_info, name='signed_info'),
     re_path(r'sign_info/signed_info_detail/(\w{8}-\w{4}-\w{4}-\w{4}-\w{12})/', bg.signed_info_detail, name='signed_info_detail'),
+    re_path(r'sign_info/unsigned_detail/(\w{8}-\w{4}-\w{4}-\w{4}-\w{12})/', bg.unsigned_detail, name='unsigned_detail'),
     path('teacher/', bg.teacher, name='teacher'),
     path('super/', bg.super, name='super'),
     path('super/add_course/', bg.add_course, name='add_course'),

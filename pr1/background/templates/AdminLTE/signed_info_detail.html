@@ -193,8 +193,9 @@
             <div class="col-12">
 
               <div class="card">
-                <div class="card-header">
-                  <h3 class="card-title">已签到信息表</h3>
+                <div class="card-header row">
+                  <h3 class="card-title col-10">已签到信息表</h3>
+                  <div class="col-2"><a href={%url 'unsigned_detail' uuid %}><button class="btn btn-block btn-danger">未签到学生</button></a></div>
                 </div>
                 <!-- /.card-header -->
                       <form method="get" action="." target="_blank">
