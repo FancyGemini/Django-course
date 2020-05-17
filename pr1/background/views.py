@@ -207,11 +207,25 @@ def student_course(request):
     id = str(v)
     info = models.Student.objects.get(sid=id)
     course = models.StuToCourse.objects.filter(sid__sid=id).values('cid__cid', 'cid__cname')
+    rlocs = []
+    cids = []
+    cnames = []
+    cdays = []
+    ctimes = []
+    for cou in course:
+        c_rdts = models.CouOnClass.objects.filter(cid__cid=cou['cid__cid']).values('rid__rloc', 'cday', 'ctime')
+        for c_rdt in c_rdts:
+            cids.append(cou['cid__cid'])
+            cnames.append(cou['cid__cname'])
+            rlocs.append(c_rdt['rid__rloc'])
+            cdays.append(c_rdt['cday'])
+            ctimes.append(c_rdt['ctime'])
+    scourse_obj = u.CourseTable(rloc=rlocs, cid=cids, cname=cnames, cday=cdays, ctime=ctimes)
     for cou in course:
         print(cou)
     context = {
         'info' : info,
-        'course' : course,
+        'scourse_obj' : scourse_obj,
     }
     return render(request, 'AdminLTE/student_course.html', context)
 

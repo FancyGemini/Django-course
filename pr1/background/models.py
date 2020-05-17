@@ -27,7 +27,7 @@ class Student(models.Model):
         verbose_name_plural = '学生信息'
 
     def __str__(self):
-        return self.sid
+        return self.sid + self.sname
 
 # --------------------------
 # teacher table
@@ -50,7 +50,7 @@ class Teacher(models.Model):
         verbose_name_plural = '教师信息'
 
     def __str__(self):
-        return self.tid
+        return self.tid + self.tname
 
 # --------------------------
 # course table
@@ -68,7 +68,7 @@ class Course(models.Model):
         verbose_name_plural = '课程信息'
 
     def __str__(self):
-        return self.cid
+        return self.cid + self.cname
 
 # --------------------------
 # courses student chosen table
@@ -100,7 +100,7 @@ class Classroom(models.Model):
         verbose_name_plural = '教室信息'
 
     def __str__(self):
-        return self.rid
+        return self.rid + self.rloc
 
 # --------------------------
 # courses on class table

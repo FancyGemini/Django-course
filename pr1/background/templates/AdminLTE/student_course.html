@@ -174,89 +174,14 @@
             <div class="card">
               <div class="card-header">
                 <h3 class="card-title">课程表</h3>
+                <div class="card-tools">
+                    <span>今天是：{% now " Y年m月d日 D " %}</span>
+                </div>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
                 <table class="table table-bordered">
-                  <thead>
-                    <!-- 表格头首日周几应与当日周几相同，然后以此类推一个礼拜周期 -->
-                    <tr>
-                      <th style="width:90px">上课时间</th>
-                      <th>周一</th><th>周二</th><th>周三</th><th>周四</th><th>周五</th><th>周六</th><th>周日</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <!--
-                     表格所需数据：上课时间、课名、老师名、上课教室、签到状况
-                     并且需要结合当前时间来判断课程是否已经授完课的状况
-                     利用<span class="badge bg-xx"></span>来进行颜色标识
-                     其中xx：未签到danger 已签到success 下节课warning 老师未安排签到primary 未到授课时间去掉bg属性
-                     具体结合运行结果看下列代码
-                    -->
-                    <tr>
-                      <td>第一大节<br>08:00</td>
-                      <td>法律[罗翔]<br>致高楼B111<br><span class="badge bg-danger">未签到</span></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>第二大节<br>09:50</td>
-                      <td></td>
-                      <td>计算机[罗翔]<br>致高楼A111<br><span class="badge bg-success">已签到</span></td>
-                      <td></td>
-                      <td>计算机[罗翔]<br>致高楼A111<br><span class="badge bg-success">已签到</span></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>第三大节<br>14:00</td>
-                      <td></td>
-                      <td></td>
-                      <td>计算机[罗翔]<br>致高楼A111<br><span class="badge bg-success">已签到</span></td>
-                      <td></td>
-                      <td>法律[罗翔]<br>致高楼A111<br><span class="badge bg-primary">未安排</span></td>
-                      <td></td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>第四大节<br>14:50</td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td>英语[罗翔]<br>致高楼A111<br><span class="badge bg-warning">下节课</span></td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>第五大节<br>18:30</td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td>计算机[罗翔]<br>致高楼A111<br><span class="badge">未开始</span></td>
-                    </tr>
-                  <!-- {% for cou in course %}
-                    <tr>
-                      <td>{{cou.cid__cid}}</td>
-                      <td>{{cou.cid__cname}}</td>
-                      <td>
-                        <div class="progress progress-xs">
-                          <div class="progress-bar progress-bar-danger" style="width: 55%"></div>
-                        </div>
-                      </td>
-                      <td><span class="badge bg-danger">55%</span></td>
-                          < 四种样式 bg-warning bg-primary bg-success >
-                    </tr>
-                  {% endfor %} -->
-                  </tbody>
+                  {{ scourse_obj.course_html | safe }}
                 </table>
               </div>
             </div>

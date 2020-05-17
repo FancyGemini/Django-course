@@ -223,7 +223,7 @@ class CourseTable(object):
         self.ctime = ctime
         self.cday = cday
 
-    def tcourse_html(self):
+    def course_html(self):
         tcourse_table_html = []
         wkds_list = ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
         tcourse_table_html.append('<thead><tr><th style="width:90px">上课时间</th>')
@@ -242,7 +242,7 @@ class CourseTable(object):
         for i in range(1, loop_tot):
             #on_time = int(self.ctime[i-1].strftime("%Y%m%d"))
             on_clock = self.ctime[i-1].strftime("%H%M")
-            fill_table_tag[clock_enum[on_clock]][int(self.cday[i-1])] = i
+            fill_table_tag[clock_enum[on_clock]][int(self.cday[i-1])-1] = i
         #print(fill_table_tag)
         for j in range(0, 5):
             tcourse_table_html.append('<tr>')
