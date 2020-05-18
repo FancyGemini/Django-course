@@ -82,19 +82,17 @@ def student_sign(stuid, couid, cousignid, debug=False):
     try:
         stu = models.StuToCourse.objects.get(sid__sid=stuid, cid__cid=couid)
         signInfo['isInClass'] = True
-
         # 测试用
         if debug:
             models.SignInfo.objects.create(sid=stu.sid, cid=cousignid.id)
             return signInfo
 
-        if models.SignInfo.objects.filter(cid=cousignid.id).exists():
+        if models.SignInfo.objects.filter(cid=cousignid.id, sid=stu.id).exists():
             signInfo['isSigned'] = True
             return signInfo
 
         # 获取课程详细信息
-        cst_tz = timezone('Asia/Shanghai')
-        time = datetime.datetime.now().replace(tzinfo=cst_tz)
+        time = datetime.datetime.utcnow().replace(tzinfo=timezone('UTC'))
         # 写入签到信息
         if ((time > cousignid.timestart) and (time < cousignid.timeend)):
             models.SignInfo.objects.create(sid=stu.sid, cid=cousignid)
