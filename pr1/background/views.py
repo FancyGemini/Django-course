@@ -194,6 +194,28 @@ def student(request):
         return redirect('/student/sign/' + sign_after_login)
     request.session.set_expiry(5)
     request.session.clear_expired()
+    
+    stu_cous = models.StuToCourse.objects.filter(sid__sid=id).values('cid__cid', 'cid__cname')
+    cid = []
+    rloc = []
+    cname = []
+    ctime = []
+    for cou in stu_cous:
+        time_loc = models.CouOnClass.objects.filter(cid__cid=cou['cid__cid']).values('ctime', 'rid__rloc', 'cday')
+        for t_l in time_loc:
+            class_day = (int(t_l['cday']))
+            now_time = datetime.datetime.now()
+            # print(str(class_day) + ' / ' + now_time.strftime("%w"))
+            today = now_time.strftime("%w")
+            if today == '0':
+                today = '7'
+            if str(class_day) == today:
+                cid.append(cou['cid__cid'])
+                cname.append(cou['cid__cname'])
+                ctime.append(t_l['ctime'])
+                rloc.append(t_l['rid__rloc'])
+    stoday_obj = u.TodayCourse(cid=cid, cname=cname, ctime=ctime, rloc=rloc)
+    
     if signinfo:
         context.update(signinfo)
     for cou in courses:
@@ -203,6 +225,7 @@ def student(request):
         cou_name = models.Course.objects.get(cid=cou_id).cname
         cou_name = str(cou_name)
         context['courses'].append(cou_name)
+    context['stoday_obj'] = stoday_obj
     return render(request, 'AdminLTE/student.html', context)
 
 

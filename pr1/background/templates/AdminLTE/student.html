@@ -257,39 +257,7 @@
                 <!-- /.card-header -->
                 <div class="card-body">
                   <ul class="todo-list" data-widget="todo-list">
-                    <!-- 按照以下格式输出今日课程及签到状态信息(checked属性) -->
-                    <li>
-                      <!-- drag handle -->
-                      <span class="handle">
-                        <i class="fas fa-ellipsis-v"></i>
-                        <i class="fas fa-ellipsis-v"></i>
-                      </span>
-                      <!-- checkbox -->
-                      <div class="icheck-primary d-inline ml-2">
-                        <input type="checkbox" value="" name="todo1">
-                        <label for="todoCheck1"></label>
-                      </div>
-                      <!-- todo text -->
-                      <span class="text">测试输入 | 课程 2020-05-08 14:00 </span>
-                      <!-- Emphasis label -->
-                      <!-- <small class="badge badge-danger"><i class="far fa-clock"></i> 2 mins</small> -->
-                    </li>
-                    <li>
-                      <!-- drag handle -->
-                      <span class="handle">
-                        <i class="fas fa-ellipsis-v"></i>
-                        <i class="fas fa-ellipsis-v"></i>
-                      </span>
-                      <!-- checkbox -->
-                      <div class="icheck-primary d-inline ml-2">
-                        <input type="checkbox" checked=true value="" name="todo1">
-                        <label for="todoCheck1"></label>
-                      </div>
-                      <!-- todo text -->
-                      <span class="text">测试输入 | 课程 | 已签到 2020-05-08 14:00 </span>
-                      <!-- Emphasis label -->
-                      <!-- <small class="badge badge-danger"><i class="far fa-clock"></i> 2 mins</small> -->
-                    </li>
+                    {{ stoday_obj.ttoday_html | safe }}
                   </ul>
                 </div>
                 <!-- /.card-body -->
