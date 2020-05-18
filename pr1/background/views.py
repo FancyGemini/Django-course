@@ -333,7 +333,8 @@ def signed_info_detail(request, cousignid):
         course_id = str(course_0.cid)
         course_name = models.Course.objects.get(cid=course_id).cname
         # print(course_name)
-        signeds = models.SignInfo.objects.filter(cid__cid__cid=course_id).values('sid__sid', 'sid__sname', 'signtime')
+        signeds = models.SignInfo.objects.filter(cid__id=uuid.UUID(cousignid)).values('sid__sid', 'sid__sname', 'signtime')
+        print(signeds)
         # print(signeds)
         for signed_0 in signeds:
             s_id = signed_0
@@ -377,13 +378,16 @@ def signed_info_detail(request, cousignid):
 def unsigned_detail(request, cousignid):
     v = request.COOKIES.get('log_t')
     t_id = models.Teacher.objects.get(tid=str(v))
+    cousign = models.CouSignInfo.objects.get(id=uuid.UUID(cousignid))
     sign_info = models.SignInfo.objects.filter(cid__id=uuid.UUID(cousignid)).values('sid__sid')
-    unsign_stu = models.Student.objects.exclude(sid__in=sign_info).values('sid', 'sname')
+    stu_to_cou = models.StuToCourse.objects.filter(cid__cid=cousign.cid.cid).values('sid__sid')
+    unsign_stu = models.Student.objects.filter(sid__in=stu_to_cou).exclude(sid__in=sign_info).values('sid', 'sname')
     
     context = {
         'info' : t_id,
         'uuid' : cousignid,
-        'stu' : unsign_stu
+        'stu' : unsign_stu,
+        'cname' : cousign.cid.cname + cousign.cid.cid
     }
         
     return render(request, 'AdminLTE/unsigned_info_detail.html', context)
