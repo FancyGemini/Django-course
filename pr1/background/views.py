@@ -146,22 +146,21 @@ def create_sign(request, cid):
 # 学生签到界面
 def sign_page(request, cousign):
     sid = str(request.COOKIES.get('log_s'))
-    cou = u.parse_UUID(cousign)
     context = {}
     try:
         stu = models.Student.objects.get(sid = sid)
         cousignid = models.CouSignInfo.objects.get(id = uuid.UUID(cousign))
         context = u.student_sign(str(sid), cousignid.cid.cid, cousignid)
-        print(str(cousignid.id))
-        print(context)
+        #print(context)
         request.session['signinfo'] = context
         request.session['signflag'] = True
         #print(request.session['signflag'])
         return redirect('/student')
     except Exception as e:
         print(e)
-        context['cousign'] = cou
+        context['cousign'] = cousign
         request.session['signinfo'] = context
+        request.session['cousign'] = cousign
         re = redirect('/')
         return re
 
@@ -188,6 +187,11 @@ def student(request):
     context = {'info':info, 'courses':[]}
     request.session.setdefault('signflag', False)
     signinfo = request.session.get('signinfo')
+    sign_after_login = request.session.get('cousign')
+    # 如果是直接进入签到链接的 登陆后再重定向至签到链接
+    if sign_after_login:
+        del request.session['cousign']
+        return redirect('/student/sign/' + sign_after_login)
     request.session.set_expiry(5)
     request.session.clear_expired()
     if signinfo:
@@ -254,7 +258,6 @@ def teacher(request):
                 cname.append(cou['cname'])
                 ctime.append(t_l['ctime'])
                 rloc.append(t_l['rid__rloc'])
-        print(str(class_day)+today)
     ttoday_obj = u.TodayCourse(cid=cid, cname=cname, ctime=ctime, rloc=rloc)
     # print(ttoday_obj.ttoday_html())
     context = {
