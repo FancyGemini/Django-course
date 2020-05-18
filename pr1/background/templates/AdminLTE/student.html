@@ -190,7 +190,7 @@
               <!-- 已签到课程计数，需要此学生已签到次数和它所要上的课的节数 -->
               <div class="small-box bg-success">
                 <div class="inner">
-                  <h3>70<sup style="font-size: 20px">/120</sup></h3>
+                  <h3>{{ signed_num }}<sup style="font-size: 20px">/{{ all_num }}</sup></h3>
 
                   <p>已签到</p>
                 </div>
@@ -202,25 +202,10 @@
             <!-- ./col -->
             <div class="col-lg-3 col-6">
               <!-- small box -->
-              <!-- 后续课程计数，需要此学生未上过的课的节数 -->
-              <div class="small-box bg-warning">
-                <div class="inner">
-                  <h3>44</h3>
-
-                  <p>后续课程</p>
-                </div>
-                <div class="icon">
-                  <i class="ion ion-person-add"></i>
-                </div>
-              </div>
-            </div>
-            <!-- ./col -->
-            <div class="col-lg-3 col-6">
-              <!-- small box -->
               <!-- 未签到课程计数，需要此学生未签到但是上过的课的节数 -->
               <div class="small-box bg-danger">
                 <div class="inner">
-                  <h3>65</h3>
+                  <h3>{{ unsign_num }}</h3>
 
                   <p>未签到</p>
                 </div>
