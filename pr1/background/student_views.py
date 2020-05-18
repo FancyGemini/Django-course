@@ -14,7 +14,7 @@ def student(request):
     v = request.COOKIES.get('log_s')
     id = str(v)
     info = models.Student.objects.get(sid=id)
-    courses = models.StuToCourse.objects.filter(sid=id)
+    courses = models.StuToCourse.objects.filter(sid__sid=id)
     # context = {'info':info, 'courses':[], 'locations':[]}
     context = {'info':info, 'courses':[]}
     request.session.setdefault('signflag', False)
@@ -51,12 +51,21 @@ def student(request):
     if signinfo:
         context.update(signinfo)
     for cou in courses:
-        cou_id = cou.cid
+        cou_id = cou.cid.cid
         cou_id = str(cou_id)
-        print(cou_id)
         cou_name = models.Course.objects.get(cid=cou_id).cname
         cou_name = str(cou_name)
         context['courses'].append(cou_name)
+    
+    # 签到信息
+    signed_num = len(models.SignInfo.objects.filter(sid__sid=id))
+    selected_cous = models.StuToCourse.objects.filter(sid__sid=id).values('cid__cid').distinct()
+    all_num = len(models.CouSignInfo.objects.filter(cid__cid__in=selected_cous))
+    
+    context['signed_num'] = signed_num
+    context['all_num'] = all_num
+    context['unsign_num'] = all_num-signed_num
+    
     context['stoday_obj'] = stoday_obj
     return render(request, 'AdminLTE/student.html', context)
 
@@ -80,8 +89,6 @@ def student_course(request):
             cdays.append(c_rdt['cday'])
             ctimes.append(c_rdt['ctime'])
     scourse_obj = u.CourseTable(rloc=rlocs, cid=cids, cname=cnames, cday=cdays, ctime=ctimes)
-    for cou in course:
-        print(cou)
     context = {
         'info' : info,
         'scourse_obj' : scourse_obj,
