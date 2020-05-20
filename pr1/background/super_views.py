@@ -59,6 +59,8 @@ def add_course(request):
 
 
 def edit_course(request, id):
+    v = request.COOKIES.get('log_t')
+    info = models.Teacher.objects.get(tid=str(v))
     cou_on_class = models.CouOnClass.objects.get(id=str(id))
     all_room = models.Classroom.objects.all()
     all_teacher = models.Teacher.objects.all()
@@ -69,7 +71,8 @@ def edit_course(request, id):
         'all_room' : all_room,
         'all_teacher' : all_teacher,
         'day' : day,
-        'clocks' : clock
+        'clocks' : clock,
+        'info' : info
     }
     return render(request, 'AdminLTE/edit_course.html', context)
 
