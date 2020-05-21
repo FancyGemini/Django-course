@@ -134,15 +134,16 @@
 
     <!--Custom JS-->
     <script src="{%static "Signin_files/custom.js" %}"></script>
-
-    {% if messages %}
     <script>
+    $.ajaxSetup({
+      async:false
+    })
+    {% if messages %}
         {% for msg in messages %}
             alert('{{ msg.message }}');
         {% endfor %}
-    </script>
     {% endif %}
-
+    </script>
 
   </div>
 </body>
