@@ -19,6 +19,8 @@ from django.urls import re_path
 from background import views, student_views, teacher_views, super_views
 from django.conf.urls import handler404
 from django.conf.urls import handler500
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -45,7 +47,7 @@ urlpatterns = [
     re_path(r'qiandao/(\d+)', views.qianndao_test),
     re_path(r'qrcode/(\w{8}-\w{4}-\w{4}-\w{4}-\w{12}).png', views.get_qrcode, name='get_qrcode'),
     re_path(r'student/sign/(\w{8}-\w{4}-\w{4}-\w{4}-\w{12})', student_views.sign_page),
-]
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 handler404 = views.page_not_found
 handler500 = views.page_error

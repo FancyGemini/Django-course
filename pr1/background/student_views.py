@@ -99,19 +99,22 @@ def student_course(request):
 def sign_page(request, cousign):
     sid = str(request.COOKIES.get('log_s'))
     context = {}
-    try:
-        stu = models.Student.objects.get(sid = sid)
-        cousignid = models.CouSignInfo.objects.get(id = uuid.UUID(cousign))
-        context = u.student_sign(str(sid), cousignid.cid.cid, cousignid)
-        #print(context)
-        request.session['signinfo'] = context
-        request.session['signflag'] = True
-        #print(request.session['signflag'])
-        return redirect('/student')
-    except Exception as e:
-        print(e)
-        context['cousign'] = cousign
-        request.session['signinfo'] = context
-        request.session['cousign'] = cousign
-        re = redirect('/')
-        return re
+    if sid:
+        try:
+            stu = models.Student.objects.get(sid = sid)
+            cousignid = models.CouSignInfo.objects.get(id = uuid.UUID(cousign))
+            context = u.student_sign(str(sid), cousignid.cid.cid, cousignid)
+            #print(context)
+            request.session['signinfo'] = context
+            request.session['signflag'] = True
+            #print(request.session['signflag'])
+            return redirect('/student')
+        except Exception as e:
+            print(e)
+            context['cousign'] = cousign
+            request.session['signinfo'] = context
+            request.session['cousign'] = cousign
+            re = redirect('/')
+            return re
+    else:
+        return redirect('/')
