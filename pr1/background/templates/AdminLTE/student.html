@@ -267,11 +267,31 @@
   <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
   <script>
     $.widget.bridge('uibutton', $.ui.button)
+    function isPC() {
+      var userAgentInfo = navigator.userAgent;
+      var agents = "Mobile";
+      var flag = true;
+      if (userAgentInfo.indexOf(agents) > 0) {
+        flag = false;
+      }
+      return flag;
+    }
     {% if request.session.signflag %}
     $(function(){
       $("#modal-default").modal({
         backdrop : false
       });
+      if (!isPC()) {
+    {% if not isInClass %}
+      alert(你不在该课程中！);
+    {% elif isOutTime %}
+      alert(不在签到时间段！);
+    {% elif isSigned %}
+      alert(请勿重复签到！);
+    {% else %}
+      alert(签到成功！);
+    {% endif %}
+      }
     });
     {% endif %}
   </script>
