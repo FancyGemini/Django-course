@@ -87,7 +87,7 @@ def student_sign(stuid, couid, cousignid, debug=False):
             models.SignInfo.objects.create(sid=stu.sid, cid=cousignid.id)
             return signInfo
 
-        if models.SignInfo.objects.filter(cid=cousignid.id, sid=stu.id).exists():
+        if models.SignInfo.objects.filter(cid__id=cousignid.id, sid__sid=stuid).exists():
             signInfo['isSigned'] = True
             return signInfo
 

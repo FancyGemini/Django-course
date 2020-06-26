@@ -112,7 +112,7 @@ def signed_info_detail(request, cousignid):
         course_name = models.Course.objects.get(cid=course_id).cname
         # print(course_name)
         signeds = models.SignInfo.objects.filter(cid__id=uuid.UUID(cousignid)).values('sid__sid', 'sid__sname', 'signtime')
-        print(signeds)
+        #print(signeds)
         # print(signeds)
         for signed_0 in signeds:
             s_id = signed_0
