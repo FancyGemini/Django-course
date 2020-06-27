@@ -2,24 +2,6 @@
 {% include "AdminLTE/header.html" with username=info.sname home_index='student' %}
 
 
-      <!-- Right navbar links -->
-      <ul class="navbar-nav ml-auto">
-        <!-- 签到按钮 -->
-        <li class="nav-item">
-          <a class="nav-link" href="#">
-            <i class="far fa-bell"></i>
-          </a>
-        </li>
-        <!-- 主题配色 -->
-        <li class="nav-item">
-          <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">
-            <i class="fas fa-th-large"></i>
-          </a>
-        </li>
-      </ul>
-    </nav>
-    <!-- /.navbar -->
-
     <!-- Main Sidebar Container -->
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
       <!-- Brand Logo -->
@@ -281,18 +263,6 @@
       $("#modal-default").modal({
         backdrop : false
       });
-      if (!isPC()) {
-    {% if not isInClass %}
-      alert(你不在该课程中！);
-    {% elif isOutTime %}
-      alert(不在签到时间段！);
-    {% elif isSigned %}
-      alert(请勿重复签到！);
-    {% else %}
-      alert(签到成功！);
-    {% endif %}
-      }
-    });
     {% endif %}
   </script>
  {% include "AdminLTE/footer.html" %}
